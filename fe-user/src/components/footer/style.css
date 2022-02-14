@@ -1,0 +1,40 @@
+.footer-container {
+  background-color: #151515;
+}
+
+.footer-title {
+  color: #ffffff;
+}
+
+h5 {
+  color: #ff3710;
+}
+
+.text-paragraph,
+.links {
+  color: #616263;
+}
+
+.linkw3:link {
+  color: #ff3710;
+}
+
+.linkw3:hover {
+  color: white;
+}
+
+.linkemail:link {
+  color: #616263;
+}
+
+.linkemail:hover {
+  color: white;
+}
+
+.links:link {
+  color: #616263;
+}
+
+.links:hover {
+  color: white;
+}
