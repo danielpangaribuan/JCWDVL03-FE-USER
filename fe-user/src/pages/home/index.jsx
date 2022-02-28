@@ -5,9 +5,13 @@ import { useNavigate, Navigate, Link } from "react-router-dom";
 import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import "./style.css"; // Ada di practice session 18/11/21 menit 00:30:50
 
+// Import Components
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
-function Login(props) {
+function Home() {
   // state
   const [username, setUserName] = useState("");
   const [password, setPassWord] = useState("");
@@ -71,52 +75,105 @@ function Login(props) {
   }
 
   return (
-    <div className="login-container">
-      <div className="login-form">
-        <h1>Sign In</h1>
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassWord(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Remember Me" />
-          </Form.Group>
-          <h3 className="register-now">
-            Don't have an account ? <Link to="/register">Register Now</Link>
-          </h3>
-          {error ? ( //Ada di pembahasan practice session 17/11/21 menit 01:21:53
-            <Alert variant="danger">
-              Error : username or password doesn't match
-            </Alert>
-          ) : null}
-          <Button variant="primary" onClick={onButtonLogin} disabled={loading}>
-            {" "}
-            {loading ? ( // // Pengunaan disabled (biar user gabisa klik" terus), Ada di pembahasan practice session 17/11/21 menit 01:32:13 & Penggunaan Spinner (biar user gabisa klik" terus), Ada di pembahasan practice session 17/11/21 menit 01:28:35
-              <Spinner animation="border" variant="light" />
-            ) : (
-              "Login"
-            )}{" "}
-          </Button>
-        </Form>
+    <div>
+      <Header />
+      <div class="banner">
+        <div
+          id="carouselExampleIndicators"
+          class="carousel slide"
+          data-ride="carousel"
+        >
+          <ol class="carousel-indicators">
+            <li
+              data-target="#carouselExampleIndicators"
+              data-slide-to="0"
+              class="active"
+            ></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+          </ol>
+          <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+              <div class="carousel-caption text-center">
+                <h3>
+                  Men’s eyewear
+                  <span>Cool summer sale 50% off</span>
+                </h3>
+                <a
+                  href="shop.html"
+                  class="btn btn-sm animated-button gibson-three mt-4"
+                >
+                  Shop Now
+                </a>
+              </div>
+            </div>
+            <div class="carousel-item item2">
+              <div class="carousel-caption text-center">
+                <h3>
+                  Women’s eyewear
+                  <span>Want to Look Your Best?</span>
+                </h3>
+                <a
+                  href="shop.html"
+                  class="btn btn-sm animated-button gibson-three mt-4"
+                >
+                  Shop Now
+                </a>
+              </div>
+            </div>
+            <div class="carousel-item item3">
+              <div class="carousel-caption text-center">
+                <h3>
+                  Men’s eyewear
+                  <span>Cool summer sale 50% off</span>
+                </h3>
+                <a
+                  href="shop.html"
+                  class="btn btn-sm animated-button gibson-three mt-4"
+                >
+                  Shop Now
+                </a>
+              </div>
+            </div>
+            <div class="carousel-item item4">
+              <div class="carousel-caption text-center">
+                <h3>
+                  Women’s eyewear
+                  <span>Want to Look Your Best?</span>
+                </h3>
+                <a
+                  href="shop.html"
+                  class="btn btn-sm animated-button gibson-three mt-4"
+                >
+                  Shop Now
+                </a>
+              </div>
+            </div>
+          </div>
+          <a
+            class="carousel-control-prev"
+            href="#carouselExampleIndicators"
+            role="button"
+            data-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a
+            class="carousel-control-next"
+            href="#carouselExampleIndicators"
+            role="button"
+            data-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 }
 
-export default Login;
+export default Home;

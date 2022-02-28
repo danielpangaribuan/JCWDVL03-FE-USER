@@ -1,0 +1,58 @@
+.modal-container {
+  /* background-color: #212529; */
+  padding: 20%;
+  /* margin: 0 auto; */
+}
+
+.modal-header {
+  background-color: #212529;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-body {
+  background-color: #212529;
+  padding: 10%;
+}
+
+.modal-title {
+  color: white;
+}
+
+.modal-titleLogin {
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-footer {
+  background-color: #212529;
+}
+
+.checkbox {
+  /* margin-left: 20px; */
+}
+
+.text-white {
+  margin: 0px 0px 8px;
+  padding: 0px 0px 0px 20px;
+}
+
+.button-signin {
+  background: #ff4e00;
+  box-shadow: 2px 2px #54575a;
+  color: white;
+  border: none;
+  margin: 0px 0px 10px;
+  padding: 8px 32px;
+}
+
+.form-password {
+  margin: 0px 0px 16px;
+}
+
+.register {
+  padding: 10px;
+}
