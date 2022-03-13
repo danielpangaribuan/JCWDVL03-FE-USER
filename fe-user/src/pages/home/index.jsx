@@ -13,9 +13,9 @@ import Footer from "../../components/footer";
 function Home() {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <Carrousel />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
