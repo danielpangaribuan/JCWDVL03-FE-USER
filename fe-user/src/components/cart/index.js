@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { CartProvider, useCart } from "react-use-cart";
 import NumberFormat from "react-number-format";
 import "./style.css";
 
 function Cart (props) {
+    const navigate = useNavigate();
     const {
         isEmpty,
         cartTotal,
@@ -37,7 +39,8 @@ function Cart (props) {
                     <>
                         <button 
                             className="btn btn-success ml-3" 
-                            id="checkoutCart" >
+                            id="checkoutCart"
+                            onClick={ () => navigate('/checkout')} >
                             Checkout
                         </button>
 

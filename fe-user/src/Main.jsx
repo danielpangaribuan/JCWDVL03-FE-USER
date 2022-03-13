@@ -10,6 +10,8 @@ import Carrousel from "./components/carousel";
 import $ from 'jquery';
 // import Register from "./pages/register";
 import Home from "./pages/home";
+import Checkout from "./pages/checkout";
+import Payment from "./pages/payment";
 // import Login from "./pages/login";
 import Products from "./pages/product";
 import { useDispatch } from "react-redux";
@@ -46,6 +48,8 @@ function Main() {
               <Route path="" element={<Products />} />
               <Route path="detail/:id" element={<ProductDetails />} />
             </Route>
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/payment" element={<Payment />} />
           </Routes>
           <Cart showCart={showCart} buttonCloseCart={ () => setShowCart(false) } />
           <Footer />
