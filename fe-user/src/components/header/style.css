@@ -1,0 +1,40 @@
+.cart-inner-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.cart-inner-info > li {
+  margin: 0;
+}
+
+.new-button-login {
+  background-color: gray;
+}
+
+.login-logout {
+  display: flex;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top_googles_cart {
+  width: 127px;
+}
+
+.login {
+  background-color: white;
+  color: #545456;
+  border: 1px solid #dde2e6;
+  font-size: 16px;
+  padding: 8px 16px;
+}
+
+.login:hover {
+  background-color: #ff4e00; /* Green */
+  color: white;
+}

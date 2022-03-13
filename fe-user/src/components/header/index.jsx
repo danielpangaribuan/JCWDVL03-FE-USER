@@ -1,107 +1,102 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { AuthUserLogin } from "../../redux/action/auth-action";
+import { Navigate, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./style.css";
+import "./style.css";
 
 // import component
 import MyModal from "../modal/index.jsx";
+import { render } from "react-dom";
 
-function Header() {
+function Header(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, data } = useSelector((state) => {
+    return {
+      // error: state.auth.error,
+      data: state.auth.data,
+    };
+  });
+  dispatch(AuthUserLogin);
+
   // ====================== MODAL LoGIN ====================
-  const [showModalLogin, setShowModalLogin] = useState(false);
-  const handleClose_modalLogin = () => setShowModalLogin(false);
-  const handleShow_modalLogin = () => setShowModalLogin(true);
+  // const [showModalLogin, setShowModalLogin] = useState(false);
+  // const handleClose_modalLogin = () => setShowModalLogin(false);
+  // const handleShow_modalLogin = () => setShowModalLogin(true);
 
-  // initialize navigation & redux
-  // const navigate = useNavigate();
+  // const ModalLogin = () => {
+  //   const [username, setUserName] = useState("");
+  //   const [password, setPassword] = useState("");
 
-  const modalLogin = () => {
-    return (
-      <Form className="form-body">
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label className="modal-title">Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-        <Form.Group className="form-password" controlId="formBasicPassword">
-          <Form.Label className="modal-title">Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
-        </Form.Group>
-        <Form.Group className="checkbox" controlId="formBasicCheckbox">
-          <Form.Check
-            type="checkbox"
-            label="Remember Me"
-            className="text-white"
-          />
-        </Form.Group>
-        <div>
-          <Button className="button-signin" variant="warning" type="submit">
-            Sign In
-          </Button>
-          <p>
-            "Don't have an account ?"
-            <Link to="../pages/register">Register Now</Link>
-          </p>
-        </div>
-      </Form>
-    );
-  };
+  //   // initialize navigation & redux
+  //   const dispatch = useDispatch();
+  //   const { error, data } = useSelector((state) => {
+  //     return {
+  //       error: state.auth.error, // Coba liat di inspect -> redux kalo mau liat susunan ngambil error nya
+  //       data: state.auth.data,
+  //     };
+  //   });
+  //   console.log("data :", data);
+  //   console.log("error :", error);
 
-  // const modalUserLogin = () => {
+  //   const onButtonLogin = () => {
+  //     const body = { username, password }; //Data yang mau dikirim ke API
+  //     dispatch(AuthUserLogin(body));
+  //   };
+
+  //   // if (data) {
+  //   //   return <Navigate to="/" />;
+  //   // }
+
+  //   // if (data) return navigate("register");
   //   return (
-  //     <div class="overlay-login text-left">
-  //       <button type="button" class="overlay-close1">
-  //         <i class="fa fa-times" aria-hidden="true"></i>
-  //       </button>
-  //       <div class="wrap">
-  //         <h5 class="text-center mb-4">Login Now</h5>
-  //         <div class="login p-5 bg-dark mx-auto mw-100">
-  //           <form action="#" method="post">
-  //             <div class="form-group">
-  //               <label class="mb-2">Email address</label>
-  //               <input
-  //                 type="email"
-  //                 class="form-control"
-  //                 id="exampleInputEmail1"
-  //                 aria-describedby="emailHelp"
-  //                 placeholder=""
-  //                 required=""
-  //               />
-  //               <small id="emailHelp" class="form-text text-muted">
-  //                 We'll never share your email with anyone else.
-  //               </small>
-  //             </div>
-  //             <div class="form-group">
-  //               <label class="mb-2">Password</label>
-  //               <input
-  //                 type="password"
-  //                 class="form-control"
-  //                 id="exampleInputPassword1"
-  //                 placeholder=""
-  //                 required=""
-  //               />
-  //             </div>
-  //             <div class="form-check mb-2">
-  //               <input
-  //                 type="checkbox"
-  //                 class="form-check-input"
-  //                 id="exampleCheck1"
-  //               />
-  //               <label class="form-check-label" for="exampleCheck1">
-  //                 Check me out
-  //               </label>
-  //             </div>
-  //             <button type="submit" class="btn btn-primary submit mb-4">
-  //               Sign In
-  //             </button>
-  //           </form>
-  //         </div>
-  //         {/*<!---->*/}
+  //     <Form className="form-body">
+  //       <Form.Group className="mb-3" controlId="formBasicEmail">
+  //         <Form.Label className="modal-title">Username</Form.Label>
+  //         <Form.Control
+  //           type="text"
+  //           placeholder="Username"
+  //           onChange={(e) => setUserName(e.target.value)}
+  //         />
+  //         <Form.Text className="text-muted">
+  //           We'll never share your email with anyone else.
+  //         </Form.Text>
+  //       </Form.Group>
+  //       <Form.Group className="form-password" controlId="formBasicPassword">
+  //         <Form.Label className="modal-title">Password</Form.Label>
+  //         <Form.Control
+  //           type="password"
+  //           placeholder="Password"
+  //           onChange={(e) => setPassword(e.target.value)}
+  //         />
+  //         {error ? <Form.Text className="error">{error}</Form.Text> : null}
+  //       </Form.Group>
+  //       <Form.Group className="checkbox" controlId="formBasicCheckbox">
+  //         <Form.Check
+  //           type="checkbox"
+  //           label="Remember Me"
+  //           className="text-white"
+  //         />
+  //       </Form.Group>
+  //       <div>
+  //         <Button
+  //           className="button-signin"
+  //           // variant="warning"
+  //           type="submit"
+  //           onClick={onButtonLogin}
+  //         >
+  //           Login
+  //         </Button>
+  //         <p>
+  //           Don't have an account ?
+  //           <a href="" onClick={() => navigate("register")}>
+  //             Register Now
+  //           </a>
+  //         </p>
   //       </div>
-  //     </div>
+  //     </Form>
   //   );
   // };
 
@@ -122,30 +117,63 @@ function Header() {
             </div>
             <div class="col-md-6 logo-w3layouts text-center">
               <h1 class="logo-w3layouts">
-                <a class="navbar-brand" href="index.html">
+                <a className="navbar-brand" href="index.html">
                   {" "}
                   Goggles{" "}
                 </a>
               </h1>
             </div>
 
-            <div class="col-md-3 top-info-cart text-right mt-lg-4">
+            <div class=" flex col-md-3 top-info-cart text-right mt-lg-4">
               <ul class="cart-inner-info">
-                <li class="button-log">
+                {/* <li class="button-log">
                   <a
-                    onClick={() => handleShow_modalLogin()}
-                    // class="btn-open"
+                    onClick={() => navigate("/login")}
                     href="#"
+                    // class="btn-open"
                   >
                     <span class="fa fa-user" aria-hidden="true"></span>
                   </a>
-                </li>
+                </li> */}
+                <div>
+                  <li>
+                    {data ? (
+                      <li className="button-login">
+                        <button onClick={() => navigate("/login")} href="#">
+                          Logout
+                        </button>
+                      </li>
+                    ) : (
+                      <div className="login-logout">
+                        <li className="button-login">
+                          <button
+                            className="login"
+                            onClick={() => navigate("/login")}
+                            href="#"
+                          >
+                            Login
+                          </button>
+                        </li>
+                        {/* <li className="button-logout">
+                          <button onClick={() => navigate("/login")} href="#">
+                            Logout
+                          </button>
+                        </li> */}
+                      </div>
+                    )}
+                  </li>
+                </div>
+                {/* <li className="new-button-login">
+                  <button onClick={() => navigate("/login")} href="#">
+                    Login
+                  </button>
+                </li> */}
                 <li class="galssescart galssescart2 cart cart box_1">
                   <form action="#" method="post" class="last">
                     <input type="hidden" name="cmd" value="_cart" />
                     <input type="hidden" name="display" value="1" />
                     <button
-                      class="top_googles_cart"
+                      className="top_googles_cart"
                       type="submit"
                       name="submit"
                       value=""
@@ -157,56 +185,7 @@ function Header() {
                 </li>
               </ul>
               {/*<!---->*/}
-              <div class="overlay-login text-left">
-                <button type="button" class="overlay-close1">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <div class="wrap">
-                  <h5 class="text-center mb-4">Login Now</h5>
-                  <div class="login p-5 bg-dark mx-auto mw-100">
-                    <form action="#" method="post">
-                      <div class="form-group">
-                        <label class="mb-2">Email address</label>
-                        <input
-                          type="email"
-                          class="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          placeholder=""
-                          required=""
-                        />
-                        <small id="emailHelp" class="form-text text-muted">
-                          We'll never share your email with anyone else.
-                        </small>
-                      </div>
-                      <div class="form-group">
-                        <label class="mb-2">Password</label>
-                        <input
-                          type="password"
-                          class="form-control"
-                          id="exampleInputPassword1"
-                          placeholder=""
-                          required=""
-                        />
-                      </div>
-                      <div class="form-check mb-2">
-                        <input
-                          type="checkbox"
-                          class="form-check-input"
-                          id="exampleCheck1"
-                        />
-                        <label class="form-check-label" for="exampleCheck1">
-                          Check me out
-                        </label>
-                      </div>
-                      <button type="submit" class="btn btn-primary submit mb-4">
-                        Sign In
-                      </button>
-                    </form>
-                  </div>
-                  {/*<!---->*/}
-                </div>
-              </div>
+
               {/*<!---->*/}
             </div>
           </div>
@@ -438,13 +417,13 @@ function Header() {
           </nav>
         </header>
       </div>
-      <MyModal
+      {/* <MyModal
         size="lg"
         show={showModalLogin}
         modalTitle="Login Now"
-        modalBody={modalLogin()}
+        modalBody={ModalLogin()}
         handleClose={() => handleClose_modalLogin()}
-      />
+      /> */}
     </div>
   );
 }
