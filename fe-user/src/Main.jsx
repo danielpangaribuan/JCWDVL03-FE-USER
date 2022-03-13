@@ -16,28 +16,28 @@ function Main() {
   const dispatch = useDispatch();
   useEffect(() =>  {
 
-    $(".dropdown").on('click', function() {
-      let dropdown_open = $('.dropdown.open');
-      if (!$(this).hasClass('open')) {
-        if (dropdown_open) {
-          $('.dropdown-menu', dropdown_open).stop(true, true).slideUp("fast");
-          $('.dropdown.open').removeClass('open')
-        }
+    // $(".dropdown").on('click', function() {
+    //   let dropdown_open = $('.dropdown.open');
+    //   if (!$(this).hasClass('open')) {
+    //     if (dropdown_open) {
+    //       $('.dropdown-menu', dropdown_open).stop(true, true).slideUp("fast");
+    //       $('.dropdown.open').removeClass('open')
+    //     }
   
-        $('.dropdown-menu', this).stop(true, true).slideDown("fast");
-        $(this).addClass('open');
-      } else {
-        $('.dropdown-menu', this).stop(true, true).slideUp("fast");
-        $(this).removeClass('open');
-      }
-    });
-    $(document).on('click', function(e) {
-      let dropdown_open = $('.dropdown.open');
-      if (!dropdown_open.is(e.target) && !dropdown_open.has(e.target).length) {
-        $('.dropdown-menu', this).stop(true, true).slideUp("fast");
-        $('.dropdown.open').removeClass('open')
-      }
-    });
+    //     $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+    //     $(this).addClass('open');
+    //   } else {
+    //     $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+    //     $(this).removeClass('open');
+    //   }
+    // });
+    // $(document).on('click', function(e) {
+    //   let dropdown_open = $('.dropdown.open');
+    //   if (!dropdown_open.is(e.target) && !dropdown_open.has(e.target).length) {
+    //     $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+    //     $('.dropdown.open').removeClass('open')
+    //   }
+    // });
 
     dispatch(AuthUserKeepLogin())
   }, []);

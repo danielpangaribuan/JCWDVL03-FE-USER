@@ -27,9 +27,7 @@
 }
 
 .login {
-  background-color: white;
   color: #545456;
-  border: 1px solid #dde2e6;
   font-size: 16px;
   padding: 8px 16px;
 }
@@ -37,4 +35,8 @@
 .login:hover {
   background-color: #ff4e00; /* Green */
   color: white;
+}
+
+.overlay-login .form-control {
+  width: 320px;
 }
