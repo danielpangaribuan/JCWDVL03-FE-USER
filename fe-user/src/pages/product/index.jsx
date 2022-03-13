@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { useCart } from "react-use-cart";
 
 import { getProduct, getCategory } from "../../redux/action/product-action";
 import NumberFormat from "react-number-format";
 
 function Product () {
+    const { addItem, inCart } = useCart();
     const [params, setParams] = useState({
         "product_name": "",
         "category_id": []
     });
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { data, category } = useSelector(state => {
         return {
@@ -119,6 +123,7 @@ function Product () {
                         {/* <!--/product right--> */}
                         <div className="left-ads-display col-lg-9">
                             <div className="wrapper_top_shop">
+                                <input />
                                 <div className="row">
                                     {
                                         data.map((item, idx) => {
@@ -130,7 +135,7 @@ function Product () {
                                                                 <img src={ `http://localhost:3000/images/products/${ item.image }` } className="img-fluid" alt="" />
                                                                 <div className="men-cart-pro">
                                                                     <div className="inner-men-cart-pro">
-                                                                        <a href="single.html" className="link-product-add-cart">Quick View</a>
+                                                                        <a onClick={ () => navigate(`/product/detail/${item.id}`)} className="link-product-add-cart text-white">Quick View</a>
                                                                     </div>
                                                                 </div>
                                                                 {/* <span className="product-new-top">New</span> */}
@@ -140,7 +145,7 @@ function Product () {
                                                                     <div className="grid_meta">
                                                                         <div className="product_price">
                                                                             <h4>
-                                                                                <a href="single.html">{ item.name }</a>
+                                                                                <a onClick={ () => navigate(`/product/detail/${item.id}`)}>{ item.name }</a>
                                                                             </h4>
                                                                             <div className="grid-price mt-2">
                                                                                 <span className="money ">
@@ -160,7 +165,7 @@ function Product () {
                                                                         </div>
                                                                     </div>
                                                                     <div className="googles single-item hvr-outline-out">
-                                                                        <button type="submit" className="googles-cart pgoogles-cart">
+                                                                        <button type="submit" className="googles-cart pgoogles-cart" onClick={ () => addItem(item)}>
                                                                             <i className="fas fa-cart-plus"></i>
                                                                         </button>
                                                                     </div>

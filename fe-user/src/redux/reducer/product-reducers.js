@@ -1,8 +1,9 @@
-import { GET_PRODUCT, GET_CATEGORY } from "../action/type";
+import { GET_PRODUCT, GET_CATEGORY, GET_PRODUCT_DETAIL} from "../action/type";
 
 const INITIAL_STATE = {
     data: [],
-    category: []
+    category: [],
+    product_detail: []
 }
 
 export const ProductReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +12,8 @@ export const ProductReducer = (state = INITIAL_STATE, action) => {
             return { ...state, data: action.payload }
         case GET_CATEGORY:
             return { ...state, category: action.payload }
+        case GET_PRODUCT_DETAIL:
+            return { ...state, product_detail: action.payload }
         default:
             return state;
     }
