@@ -1,0 +1,27 @@
+.product-detail-container {
+    padding: 120px 15%;
+}
+.product-detail-context {
+    /* background-color: aqua; */
+    display: flex;
+}
+.product-detail-left,
+.product-detail-right {
+    width: 50%;
+}
+
+.product-detail-right {
+    padding: 2%;
+}
+.button-size {
+    margin-right: 10px;
+    padding: 5px 15px;
+}
+.add-to-cart,
+.stock-input {
+    display: flex;
+}
+
+.add-to-cart {
+    margin-top: 10px;
+}

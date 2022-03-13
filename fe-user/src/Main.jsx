@@ -12,6 +12,7 @@ import Home from "./pages/home";
 import Product from "./pages/product";
 import { useDispatch } from "react-redux";
 import { AuthUserKeepLogin } from "./redux/action/auth-action";
+import ProductDetails from "./pages/product-detail";
 
 function Main() {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ function Main() {
           {/* <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} /> */}
           <Route path="/product" element={<Product />} />
+          <Route path="/detail/:id" element={<ProductDetails />} />
         </Routes>
         <Footer />
       </BrowserRouter>
