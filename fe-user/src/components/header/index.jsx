@@ -1,129 +1,86 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
-import $ from 'jquery';
-import { AuthUserLogin } from "../../redux/action/auth-action";
+import $ from "jquery";
+import {
+  AuthUserLogin,
+  AuthUserLogOut,
+  AuthUserRegister,
+} from "../../redux/action/auth-action";
 import { Navigate, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
-// import component
-import MyModal from "../modal/index.jsx";
-import { render } from "react-dom";
-
-function Header(props) {
+function Header() {
+  //LOGIN
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [registerForm, setRegisterForm] = useState(false);
+
+  //REGISTER
+  const [usernameregister, setUserNameRegister] = useState("");
+  const [passwordregister, setPasswordRegister] = useState("");
+  const [repasswordregister, setRePasswordRegister] = useState("");
+  const [emailregister, setEmailRegister] = useState("");
+  const [fullnameregister, setFullNameRegister] = useState("");
+  const [dateofbirthregister, setDateOfBirthRegister] = useState("");
+  const [genderregister, setGenderRegister] = useState("");
+
+  // Setup
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    $(document).ready(function () {
+      $(".button-log a").click(function () {
+        $(".overlay-login").fadeToggle(200);
+        $(this).toggleClass("btn-open").toggleClass("btn-close");
+      });
+    });
+    $(".overlay-close1").on("click", function () {
+      $(".overlay-login").fadeToggle(200);
+      $(".button-log a").toggleClass("btn-open").toggleClass("btn-close");
+      // open = false;
+    });
+  }, []);
+
   const { error, data } = useSelector((state) => {
     return {
       error: state.auth.error, // Coba liat di inspect -> redux kalo mau liat susunan ngambil error nya
       data: state.auth.data,
     };
   });
-  dispatch(AuthUserLogin);
+  console.log("data :", data);
+  console.log("error :", error);
+  // dispatch(AuthUserLogin);
 
   const onButtonLogin = () => {
     const body = { username, password }; //Data yang mau dikirim ke API
     dispatch(AuthUserLogin(body));
-
-    navigate("/");
   };
 
-  useEffect(() => {
-		$(document).ready(function () {
-			$(".button-log a").click(function () {
-				$(".overlay-login").fadeToggle(200);
-				$(this).toggleClass('btn-open').toggleClass('btn-close');
-			});
-		});
-		$('.overlay-close1').on('click', function () {
-			$(".overlay-login").fadeToggle(200);
-			$(".button-log a").toggleClass('btn-open').toggleClass('btn-close');
-			// open = false;
-		});
-  }, [])
+  const onButtonLogOut = () => {
+    dispatch(AuthUserLogOut());
+  };
 
-  // ====================== MODAL LoGIN ====================
-  // const [showModalLogin, setShowModalLogin] = useState(false);
-  // const handleClose_modalLogin = () => setShowModalLogin(false);
-  // const handleShow_modalLogin = () => setShowModalLogin(true);
+  // if (data) return <Navigate to="/" />;
 
-  // const ModalLogin = () => {
-  //   const [username, setUserName] = useState("");
-  //   const [password, setPassword] = useState("");
+  const onButtonRegister = () => {
+    // Cek Apakah password dan repassword sama
+    if (passwordregister !== repasswordregister) return;
+    const body = {
+      username: usernameregister,
+      email: emailregister,
+      password: passwordregister,
+      fullname: fullnameregister,
+      date_of_birth: dateofbirthregister,
+      gender: genderregister,
+    };
+    dispatch(AuthUserRegister(body));
 
-  //   // initialize navigation & redux
-  //   const dispatch = useDispatch();
-  //   const { error, data } = useSelector((state) => {
-  //     return {
-  //       error: state.auth.error, // Coba liat di inspect -> redux kalo mau liat susunan ngambil error nya
-  //       data: state.auth.data,
-  //     };
-  //   });
-  //   console.log("data :", data);
-  //   console.log("error :", error);
-
-  //   const onButtonLogin = () => {
-  //     const body = { username, password }; //Data yang mau dikirim ke API
-  //     dispatch(AuthUserLogin(body));
-  //   };
-
-  //   // if (data) {
-  //   //   return <Navigate to="/" />;
-  //   // }
-
-  //   // if (data) return navigate("register");
-  //   return (
-  //     <Form className="form-body">
-  //       <Form.Group className="mb-3" controlId="formBasicEmail">
-  //         <Form.Label className="modal-title">Username</Form.Label>
-  //         <Form.Control
-  //           type="text"
-  //           placeholder="Username"
-  //           onChange={(e) => setUserName(e.target.value)}
-  //         />
-  //         <Form.Text className="text-muted">
-  //           We'll never share your email with anyone else.
-  //         </Form.Text>
-  //       </Form.Group>
-  //       <Form.Group className="form-password" controlId="formBasicPassword">
-  //         <Form.Label className="modal-title">Password</Form.Label>
-  //         <Form.Control
-  //           type="password"
-  //           placeholder="Password"
-  //           onChange={(e) => setPassword(e.target.value)}
-  //         />
-  //         {error ? <Form.Text className="error">{error}</Form.Text> : null}
-  //       </Form.Group>
-  //       <Form.Group className="checkbox" controlId="formBasicCheckbox">
-  //         <Form.Check
-  //           type="checkbox"
-  //           label="Remember Me"
-  //           className="text-white"
-  //         />
-  //       </Form.Group>
-  //       <div>
-  //         <Button
-  //           className="button-signin"
-  //           // variant="warning"
-  //           type="submit"
-  //           onClick={onButtonLogin}
-  //         >
-  //           Login
-  //         </Button>
-  //         <p>
-  //           Don't have an account ?
-  //           <a href="" onClick={() => navigate("register")}>
-  //             Register Now
-  //           </a>
-  //         </p>
-  //       </div>
-  //     </Form>
-  //   );
-  // };
+    if (error) return;
+    setRegisterForm(false);
+  };
 
   return (
     <div>
@@ -151,59 +108,28 @@ function Header(props) {
 
             <div class=" flex col-md-3 top-info-cart text-right mt-lg-4">
               <ul class="cart-inner-info">
-                <div>
-                  {data ? (
-                    <li className="button-login">
-                      <button onClick={() => navigate("/login")} href="#">
-                        Logout
-                      </button>
-                    </li>
-                  ) : (
-                    <li class="button-log">
-                      <a href="#" class="btn-open" >
-                        <span class="fa fa-user" aria-hidden="true"></span>
-                      </a>
-                    </li>
-                      /* <li className="button-logout">
-                        <button onClick={() => navigate("/login")} href="#">
-                          Logout
-                        </button>
-                      </li> */
-                  )}
-                </div>
-                {/* <li className="new-button-login">
-                  <button onClick={() => navigate("/login")} href="#">
-                    Login
-                  </button>
-                </li> */}
-                <li class="galssescart galssescart2 cart cart box_1">
-                  <form action="#" method="post" class="last">
-                    <input type="hidden" name="cmd" value="_cart" />
-                    <input type="hidden" name="display" value="1" />
-                    <button
-                      className="top_googles_cart"
-                      type="submit"
-                      name="submit"
-                      value=""
-                    >
-                      My Cart
-                      <i class="fas fa-cart-arrow-down"></i>
-                    </button>
-                  </form>
+                <li class="button-log">
+                  <a class="btn-open" href="#">
+                    <span class="fa fa-user" aria-hidden="true"></span>
+                  </a>
                 </li>
-              </ul>
-              <div class="overlay-login text-left">
-                <button type="button" class="overlay-close1">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                  {
-                    registerForm === false ?
+                <div class="overlay-login text-left">
+                  <button type="button" class="overlay-close1">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </button>
+
+                  {registerForm === false ? (
                     <div class="wrap">
                       <h5 class="text-center mb-4">Login Now</h5>
                       <div class="login p-5 bg-dark mx-auto mw-100">
                         <Form className="form-body">
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label className="modal-title">Username</Form.Label>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicEmail"
+                          >
+                            <Form.Label className="modal-title">
+                              Username
+                            </Form.Label>
                             <Form.Control
                               type="text"
                               placeholder="Username"
@@ -213,16 +139,30 @@ function Header(props) {
                               We'll never share your email with anyone else.
                             </Form.Text>
                           </Form.Group>
-                          <Form.Group className="form-password" controlId="formBasicPassword">
-                            <Form.Label className="modal-title">Password</Form.Label>
+                          <Form.Group
+                            className="form-password"
+                            controlId="formBasicPassword"
+                          >
+                            <Form.Label
+                              className="modal-title"
+                              autocomplete="on"
+                            >
+                              Password
+                            </Form.Label>
                             <Form.Control
                               type="password"
-                              placeholder="Password"
+                              placeholder="password"
                               onChange={(e) => setPassword(e.target.value)}
                             />
-                            {error ? <Form.Text className="error">{error}</Form.Text> : null}
+                            {error ? (
+                              <Form.Text className="error">{error}</Form.Text>
+                            ) : null}
                           </Form.Group>
-                          <Form.Group className="checkbox" controlId="formBasicCheckbox">
+
+                          <Form.Group
+                            className="checkbox"
+                            controlId="formBasicCheckbox"
+                          >
                             <Form.Check
                               type="checkbox"
                               label="Remember Me"
@@ -240,7 +180,10 @@ function Header(props) {
                             </Button>
                             <p>
                               Don't have an account ?
-                              <button onClick={() => setRegisterForm(true)}>
+                              <button
+                                className="button-register-now"
+                                onClick={() => setRegisterForm(true)}
+                              >
                                 Register Now
                               </button>
                             </p>
@@ -248,32 +191,124 @@ function Header(props) {
                         </Form>
                       </div>
                     </div>
-                    :
+                  ) : (
                     <div class="wrap">
-                      <h5 class="text-center mb-4">Login Now</h5>
+                      <h5 class="text-center mb-4">Register</h5>
                       <div class="login p-5 bg-dark mx-auto mw-100">
                         <Form className="form-body">
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label className="modal-title">Username</Form.Label>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicEmail"
+                          >
+                            <Form.Label className="modal-title">
+                              Email
+                            </Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder="Username"
-                              onChange={(e) => setUserName(e.target.value)}
+                              placeholder="Email"
+                              onChange={(e) => setEmailRegister(e.target.value)}
                             />
-                            <Form.Text className="text-muted">
-                              We'll never share your email with anyone else.
-                            </Form.Text>
                           </Form.Group>
-                          <Form.Group className="form-password" controlId="formBasicPassword">
-                            <Form.Label className="modal-title">Password</Form.Label>
+                          <Form.Group
+                            className="form-password"
+                            controlId="formBasicPassword"
+                          >
+                            <Form.Label className="modal-title">
+                              Password
+                            </Form.Label>
                             <Form.Control
                               type="password"
                               placeholder="Password"
-                              onChange={(e) => setPassword(e.target.value)}
+                              onChange={(e) =>
+                                setPasswordRegister(e.target.value)
+                              }
                             />
-                            {error ? <Form.Text className="error">{error}</Form.Text> : null}
                           </Form.Group>
-                          <Form.Group className="checkbox" controlId="formBasicCheckbox">
+                          <Form.Group
+                            className="form-password"
+                            controlId="formBasicPassword"
+                          >
+                            <Form.Label
+                              className="modal-title"
+                              autocomplete="on"
+                            >
+                              Re-Password
+                            </Form.Label>
+                            <Form.Control
+                              type="password"
+                              placeholder="re-password"
+                              onChange={(e) =>
+                                setRePasswordRegister(e.target.value)
+                              }
+                            />
+                            {/* {error ? (
+                              <Form.Text className="error">{error}</Form.Text>
+                            ) : null} */}
+                          </Form.Group>
+                          <Form.Group
+                            className="form-password"
+                            controlId="formBasicPassword"
+                          >
+                            <Form.Label className="modal-title">
+                              Username
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Username"
+                              onChange={(e) =>
+                                setUserNameRegister(e.target.value)
+                              }
+                            />
+                          </Form.Group>
+                          <Form.Group
+                            className="form-password"
+                            controlId="formBasicPassword"
+                          >
+                            <Form.Label className="modal-title">
+                              Fullname
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Fullname"
+                              onChange={(e) =>
+                                setFullNameRegister(e.target.value)
+                              }
+                            />
+                          </Form.Group>
+                          <Form.Group
+                            className="form-password"
+                            controlId="formBasicPassword"
+                          >
+                            <Form.Label className="modal-title">
+                              Date Of Birth
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="1997-08-06"
+                              onChange={(e) =>
+                                setDateOfBirthRegister(e.target.value)
+                              }
+                            />
+                          </Form.Group>
+                          <Form.Group
+                            className="form-password"
+                            controlId="formBasicPassword"
+                          >
+                            <Form.Label className="modal-title">
+                              Gender
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Laki - laki atau Perempuan"
+                              onChange={(e) =>
+                                setGenderRegister(e.target.value)
+                              }
+                            />
+                          </Form.Group>
+                          <Form.Group
+                            className="checkbox"
+                            controlId="formBasicCheckbox"
+                          >
                             <Form.Check
                               type="checkbox"
                               label="Remember Me"
@@ -285,13 +320,19 @@ function Header(props) {
                               className="button-signin"
                               // variant="warning"
                               type="submit"
-                              onClick={onButtonLogin}
+                              onClick={onButtonRegister}
                             >
                               Register
                             </Button>
+                            {error ? (
+                              <Form.Text className="error">{error}</Form.Text>
+                            ) : null}
                             <p>
                               Already have an account ?
-                              <button onClick={() => setRegisterForm(false)}>
+                              <button
+                                className="button-register-now"
+                                onClick={() => setRegisterForm(false)}
+                              >
                                 Login Now
                               </button>
                             </p>
@@ -299,8 +340,35 @@ function Header(props) {
                         </Form>
                       </div>
                     </div>
-                  }
-              </div>
+                  )}
+                </div>
+                <li class="galssescart galssescart2 cart cart box_1">
+                  <form action="#" method="post" class="last">
+                    <input type="hidden" name="cmd" value="_cart" />
+                    <input type="hidden" name="display" value="1" />
+                    <button
+                      className="top_googles_cart"
+                      type="submit"
+                      name="submit"
+                      value=""
+                    >
+                      My Cart
+                      <i class="fas fa-cart-arrow-down"></i>
+                    </button>
+                  </form>
+                </li>
+                {data ? (
+                  <Button
+                    className="logout-button"
+                    variant="primary"
+                    onClick={onButtonLogOut}
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  ""
+                )}
+              </ul>
             </div>
           </div>
           <div class="search">

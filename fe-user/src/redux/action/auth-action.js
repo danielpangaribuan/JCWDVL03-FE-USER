@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { START_AUTH, END_AUTH, USER_LOGIN } from "./type";
+import { START_AUTH, END_AUTH, USER_LOGIN, USER_LOGOUT } from "./type";
 
 const API_URL = "http://localhost:2000/api/auth";
 export const AuthUserLogin = (body) => {
@@ -69,6 +69,33 @@ export const AuthUserKeepLogin = () => {
     } catch (error) {
       console.log(error.response);
       const message = error.response && error.response.data.error.message; // Ini seperti bentuk singkat if, kalo ada error.respond maka execute error.respond.data.error.message
+      dispatch({ type: END_AUTH, payload: message });
+    }
+  };
+};
+
+export const AuthUserLogOut = () => {
+  return async (dispatch) => {
+    dispatch({ type: START_AUTH });
+    localStorage.removeItem("token");
+
+    dispatch({ type: USER_LOGOUT });
+
+    dispatch({ type: END_AUTH, payload: "" });
+  };
+};
+
+export const AuthUserRegister = (body) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: START_AUTH });
+
+      await Axios.post(API_URL + "/register", body);
+
+      dispatch({ type: END_AUTH, payload: "" });
+    } catch (error) {
+      console.log(error.response);
+      const message = error.response && error.response.data.error.message;
       dispatch({ type: END_AUTH, payload: message });
     }
   };

@@ -40,3 +40,31 @@
 .overlay-login .form-control {
   width: 320px;
 }
+
+.logout-button {
+  margin-left: 15px;
+}
+
+.button-signin {
+  background-color: #ff4e00;
+  color: #ffffff;
+  border-color: #545456;
+  font-size: 16px;
+  padding: 8px 16px;
+}
+
+.button-signin:hover {
+  background-color: white; /* Green */
+  color: rgb(91, 88, 88);
+  border-color: #ff4e00;
+}
+
+.button-register-now {
+  background-color: transparent;
+  color: #3960d5;
+  border-color: transparent;
+}
+
+.error {
+  color: red;
+}
