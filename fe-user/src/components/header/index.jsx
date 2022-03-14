@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import $ from "jquery";
@@ -25,6 +26,7 @@ function Header(props) {
   const [fullnameregister, setFullNameRegister] = useState("");
   const [dateofbirthregister, setDateOfBirthRegister] = useState("");
   const [genderregister, setGenderRegister] = useState("");
+  const [successregister, setSuccessRegister] = useState(false);
 
   // Setup
   const navigate = useNavigate();
@@ -66,19 +68,25 @@ function Header(props) {
   // if (data) return <Navigate to="/" />;
 
   const onButtonRegister = () => {
-    // Cek Apakah password dan repassword sama
-    if (passwordregister !== repasswordregister) return;
-    const body = {
-      username: usernameregister,
-      email: emailregister,
-      password: passwordregister,
-      fullname: fullnameregister,
-      date_of_birth: dateofbirthregister,
-      gender: genderregister,
-    };
-    dispatch(AuthUserRegister(body));
+    try {
+      // Cek Apakah password dan repassword sama
+      if (passwordregister !== repasswordregister) return;
+      const body = {
+        username: usernameregister,
+        email: emailregister,
+        password: passwordregister,
+        fullname: fullnameregister,
+        date_of_birth: dateofbirthregister,
+        gender: genderregister,
+      };
+      dispatch(AuthUserRegister(body));
 
-    if (error) return;
+      setSuccessRegister(true);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (successregister) return;
     setRegisterForm(false);
   };
 
