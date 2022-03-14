@@ -5,8 +5,11 @@ import ReduxThunk from "redux-thunk";
 
 // import semua reducers
 import { AuthUserReducer } from "../redux/reducer/auth-reducers";
+import { ProductReducer } from "../redux/reducer/product-reducers";
+
 const Reducers = combineReducers({
   auth: AuthUserReducer,
+  product: ProductReducer
 });
 
 // export function, ikutin dulu aja formatnya

@@ -13,7 +13,7 @@ import Footer from "../../components/footer";
 function Home() {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <Carrousel />
       <section class="banner-bottom-wthreelayouts py-lg-5 py-3">
         <div class="container-fluid">
@@ -1575,6 +1575,7 @@ function Home() {
         </div>
       </section>
       <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

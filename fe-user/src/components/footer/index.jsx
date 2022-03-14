@@ -4,123 +4,123 @@ import "./style.css";
 
 function Footer() {
   return (
-    <div class="footer-container">
-      <footer class="py-lg-5 py-3">
-        <div class="container-fluid px-lg-5 px-3">
-          <div class="row footer-top-w3layouts">
-            <div class="col-lg-3 footer-grid-w3ls">
-              <div class="footer-title">
+    <div className="footer-container">
+      <footer className="py-lg-5 py-3">
+        <div className="container-fluid px-lg-5 px-3">
+          <div className="row footer-top-w3layouts">
+            <div className="col-lg-3 footer-grid-w3ls">
+              <div className="footer-title">
                 <h3>About Us</h3>
               </div>
-              <div class="footer-text">
-                <p class="text-paragraph">
+              <div className="footer-text">
+                <p className="text-paragraph">
                   Curabitur non nulla sit amet nislinit tempus convallis quis ac
                   lectus. lac inia eget consectetur sed, convallis at tellus.
                   Nulla porttitor accumsana tincidunt.
                 </p>
-                <ul class="footer-social text-left mt-lg-4 mt-3">
-                  <li class="mx-2">
+                <ul className="footer-social text-left mt-lg-4 mt-3">
+                  <li className="mx-2">
                     <a href="#">
-                      <span class="fab fa-facebook-f"></span>
+                      <span className="fab fa-facebook-f"></span>
                     </a>
                   </li>
-                  <li class="mx-2">
+                  <li className="mx-2">
                     <a href="#">
-                      <span class="fab fa-twitter"></span>
+                      <span className="fab fa-twitter"></span>
                     </a>
                   </li>
-                  <li class="mx-2">
+                  <li className="mx-2">
                     <a href="#">
-                      <span class="fab fa-google-plus-g"></span>
+                      <span className="fab fa-google-plus-g"></span>
                     </a>
                   </li>
-                  <li class="mx-2">
+                  <li className="mx-2">
                     <a href="#">
-                      <span class="fab fa-linkedin-in"></span>
+                      <span className="fab fa-linkedin-in"></span>
                     </a>
                   </li>
-                  <li class="mx-2">
+                  <li className="mx-2">
                     <a href="#">
-                      <span class="fas fa-rss"></span>
+                      <span className="fas fa-rss"></span>
                     </a>
                   </li>
-                  <li class="mx-2">
+                  <li className="mx-2">
                     <a href="#">
-                      <span class="fab fa-vk"></span>
+                      <span className="fab fa-vk"></span>
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
-            <div class="col-lg-3 footer-grid-w3ls">
-              <div class="footer-title">
+            <div className="col-lg-3 footer-grid-w3ls">
+              <div className="footer-title">
                 <h3>Get in touch</h3>
               </div>
-              <div class="contact-info">
+              <div className="contact-info">
                 <h5>Location :</h5>
-                <p class="text-paragraph">
+                <p className="text-paragraph">
                   0926k 4th block building, king Avenue, New York City.
                 </p>
-                <div class="phone">
+                <div className="phone">
                   <h5>Contact :</h5>
-                  <p class="text-paragraph">Phone : +121 098 8907 9987</p>
-                  <p class="text-paragraph">
+                  <p className="text-paragraph">Phone : +121 098 8907 9987</p>
+                  <p className="text-paragraph">
                     Email :
-                    <a class="linkemail" href="mailto:info@example.com">
+                    <a className="linkemail" href="mailto:info@example.com">
                       info@example.com
                     </a>
                   </p>
                 </div>
               </div>
             </div>
-            <div class="col-lg-3 footer-grid-w3ls">
-              <div class="footer-title">
+            <div className="col-lg-3 footer-grid-w3ls">
+              <div className="footer-title">
                 <h3>Quick Links</h3>
               </div>
-              <ul class="links">
+              <ul className="links">
                 <li>
-                  <a class="links" href="index.html">
+                  <a className="links" href="index.html">
                     Home
                   </a>
                 </li>
                 <li>
-                  <a class="links" href="about.html">
+                  <a className="links" href="about.html">
                     About
                   </a>
                 </li>
                 <li>
-                  <a class="links" href="404.html">
+                  <a className="links" href="404.html">
                     Error
                   </a>
                 </li>
                 <li>
-                  <a class="links" href="shop.html">
+                  <a className="links" href="shop.html">
                     Shop
                   </a>
                 </li>
                 <li>
-                  <a class="links" href="contact.html">
+                  <a className="links" href="contact.html">
                     Contact Us
                   </a>
                 </li>
               </ul>
             </div>
-            <div class="col-lg-3 footer-grid-w3ls">
-              <div class="footer-title">
+            <div className="col-lg-3 footer-grid-w3ls">
+              <div className="footer-title">
                 <h3>Sign up for your offers</h3>
               </div>
-              <div class="footer-text">
-                <p class="text-paragraph">
+              <div className="footer-text">
+                <p className="text-paragraph">
                   By subscribing to our mailing list you will always get latest
                   news and updates from us.
                 </p>
               </div>
             </div>
           </div>
-          <div class="copyright-w3layouts mt-4">
-            <p class="copy-right text-center ">
+          <div className="copyright-w3layouts mt-4">
+            <p className="copy-right text-center ">
               &copy; 2018 Goggles. All Rights Reserved | Design by
-              <a class="linkw3" href="http://w3layouts.com/">
+              <a className="linkw3" href="http://w3layouts.com/">
                 {" "}
                 W3layouts{" "}
               </a>
