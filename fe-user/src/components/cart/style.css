@@ -6,6 +6,7 @@
     background: #454546;
     width: 400px;
     z-index: 999;
+    overflow: auto;
 }
 
 .cart-wrapper h1 {
@@ -21,6 +22,7 @@
 
 .cart-menu {
     list-style: none;
+    overflow: auto;
 }
 .cart-list {
     display: flex;

@@ -48,7 +48,7 @@ function Cart (props) {
                         <ul className="cart-menu">
                             {
                                 items.map(item => (
-                                    <li className="cart-list p-2">
+                                    <li className="cart-list p-2" key={item.id}>
                                         <div className="cart-list-image">
                                             <img src={ `http://localhost:3000/images/products/${ item.image }` } className="img-fluid" alt="" />
                                         </div>
@@ -70,6 +70,7 @@ function Cart (props) {
                                                         allowNegative={true} /> 
                                                     }
                                                 </h5>
+                                                <span className="text-muted">Warehouse: { item.province_name }</span>
                                             </div>
                                             <div className="cart-list-detail-bottom d-flex justify-content-end">
                                                 <button className="btn btn-transparent text-danger" onClick={ () => removeItem(item.id)}>

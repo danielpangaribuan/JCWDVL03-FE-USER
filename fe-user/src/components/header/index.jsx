@@ -52,8 +52,8 @@ function Header(props) {
       data: state.auth.data,
     };
   });
-  console.log("data :", data);
-  console.log("error :", error);
+  // console.log("data :", data);
+  // console.log("error :", error);
   // dispatch(AuthUserLogin);
 
   const onButtonLogin = () => {
@@ -115,22 +115,22 @@ function Header(props) {
                 </h1>
               </div>
 
-              <div class=" flex col-md-3 top-info-cart text-right mt-lg-4">
-                <ul class="cart-inner-info">
-                  <li class="button-log">
-                    <a class="btn-open" href="#">
-                      <span class="fa fa-user" aria-hidden="true"></span>
+              <div className=" flex col-md-3 top-info-cart text-right mt-lg-4">
+                <ul className="cart-inner-info">
+                  <li className="button-log">
+                    <a className="btn-open" href="#">
+                      <span className="fa fa-user" aria-hidden="true"></span>
                     </a>
                   </li>
-                  <div class="overlay-login text-left">
-                    <button type="button" class="overlay-close1">
-                      <i class="fa fa-times" aria-hidden="true"></i>
+                  <div className="overlay-login text-left">
+                    <button type="button" className="overlay-close1">
+                      <i className="fa fa-times" aria-hidden="true"></i>
                     </button>
 
                     {registerForm === false ? (
-                      <div class="wrap">
-                        <h5 class="text-center mb-4">Login Now</h5>
-                        <div class="login p-5 bg-dark mx-auto mw-100">
+                      <div className="wrap">
+                        <h5 className="text-center mb-4">Login Now</h5>
+                        <div className="login p-5 bg-dark mx-auto mw-100">
                           <Form className="form-body">
                             <Form.Group
                               className="mb-3"
@@ -154,7 +154,7 @@ function Header(props) {
                             >
                               <Form.Label
                                 className="modal-title"
-                                autocomplete="on"
+                                autoComplete="on"
                               >
                                 Password
                               </Form.Label>
@@ -201,9 +201,9 @@ function Header(props) {
                         </div>
                       </div>
                     ) : (
-                      <div class="wrap">
-                        <h5 class="text-center mb-4">Register</h5>
-                        <div class="login p-5 bg-dark mx-auto mw-100">
+                      <div className="wrap">
+                        <h5 className="text-center mb-4">Register</h5>
+                        <div className="login p-5 bg-dark mx-auto mw-100">
                           <Form className="form-body">
                             <Form.Group
                               className="mb-3"
@@ -241,7 +241,7 @@ function Header(props) {
                             >
                               <Form.Label
                                 className="modal-title"
-                                autocomplete="on"
+                                autoComplete="on"
                               >
                                 Re-Password
                               </Form.Label>
@@ -353,20 +353,14 @@ function Header(props) {
                       </div>
                     )}
                   </div>
-                  <li class="galssescart galssescart2 cart cart box_1">
-                    <form action="#" method="post" class="last">
-                      <input type="hidden" name="cmd" value="_cart" />
-                      <input type="hidden" name="display" value="1" />
-                      <button
-                        className="top_googles_cart"
-                        type="submit"
-                        name="submit"
-                        value=""
-                      >
-                        My Cart
-                        <i class="fas fa-cart-arrow-down"></i>
-                      </button>
-                    </form>
+                  <li className="galssescart galssescart2 cart cart box_1">
+                    <button
+                      className="top_googles_cart"
+                      onClick={ props.showCart }
+                    >
+                      My Cart
+                      <i className="fas fa-cart-arrow-down"></i>
+                    </button>
                   </li>
                   {data ? (
                     <Button

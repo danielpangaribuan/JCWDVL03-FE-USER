@@ -20,6 +20,7 @@ function Product () {
             category: state.product.category
         }
     });
+    console.log(data)
 
     useEffect(() => {
         dispatch(getProduct(params));
@@ -42,7 +43,7 @@ function Product () {
         <section className="banner-bottom-wthreelayouts py-lg-5 py-3">
             <div className="container-fluid">
                 <div className="inner-sec-shop px-lg-4 px-3">
-                    <h3 className="tittle-w3layouts my-lg-4 mt-3">New Arrivals for you </h3>
+                    <h3 className="tittle-w3layouts my-lg-4 mt-3">Products for you </h3>
                     <div className="row">
                         {/* <!-- product left --> */}
                         <div className="side-bar col-lg-3">
@@ -161,6 +162,14 @@ function Product () {
                                                                                         allowNegative={true} /> 
                                                                                     }
                                                                                 </span>
+                                                                                <br />
+                                                                                <span className='text-muted'>{item.province_name}</span>
+                                                                                    {
+                                                                                        item.quantity < 3 ?
+                                                                                        <span className='text-danger' style={{ fontSize: 12 }}> ({item.quantity} items)</span>
+                                                                                        :
+                                                                                        <span style={{ fontSize: 12 }}> ({item.quantity} items)</span>
+                                                                                    } 
                                                                             </div>
                                                                         </div>
                                                                     </div>

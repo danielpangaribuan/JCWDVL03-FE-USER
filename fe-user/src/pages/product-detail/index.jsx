@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Carousel, Button, Form } from 'react-bootstrap'
@@ -18,17 +17,17 @@ const ProductDetails = (props) => {
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    const { UID, product_detail } = useSelector(state => {
+    const { UID, product_detail, product_detail_loading } = useSelector(state => {
         return {
             // UID : state.user.UID,
-            product_detail : state.product.product_detail
+            product_detail : state.product.product_detail,
+            product_detail_loading : state.product.product_detail_loading
         }
     })
 
     useEffect(() => {
         dispatch(getProductDetail(id));
-        // setBanner(product_detail.image_group[0].image);
-    }, [banner])
+    }, [])
 
     const alreadyAdded = inCart(product_detail.id);
     const onButtonPlus = () => {
@@ -40,26 +39,19 @@ const ProductDetails = (props) => {
         setInput(input - 1)
     }
 
-    // const onButtonAddToCart = () => {
-    //     // check stock
-    //     if (input === 0) {
-    //         alert("⚠ Warning!, please insert quantity !")
-    //         return
+    // const renderImage = () => {
+    //     console.log(product_detail_loading)
+    //     if (product_detail.length && product_detail) {
+    //         return (
+    //             product_detail.image_group.map((item, idx) => {
+    //                 return (
+    //                     <li data-thumb={ `http://localhost:3000/images/products/${ item.image }` } onClick={ () => setBanner(item.image) }>
+    //                         <div className="thumb-image"> <img src={ `http://localhost:3000/images/products/${ item.image }` } data-imagezoom="true" className="img-fluid" alt=" " /> </div>
+    //                     </li>
+    //                 )
+    //             })
+    //         )
     //     }
-    //     if (!UID) {
-    //         alert("⚠ Warning!, please login to save your cart !")
-    //         return
-    //     }
-    //     const cart = {
-    //         userUID : UID,
-    //         productId : Number(id),
-    //         harga : 0,
-    //         // quantity : stock.sizes[sizeIndex - 1].stock
-    //     }
-    //     Axios.post(API_URL + '/cart', cart)
-    //     .then(res => console.log(res))
-    //     .catch(error => console.log(error))
-
     // }
     
     return (
@@ -69,23 +61,23 @@ const ProductDetails = (props) => {
 					<div className="row">
                         <div className="col-lg-4 single-right-left ">
                             <div className="grid images_3_of_2">
-                                {/* <div className="slides_active">
-                                    <img src={ `http://localhost:3000/images/products/${banner}` } data-imagezoom="true" className="img-fluid" alt=" " />
-                                </div> */}
-                                {/* <div className="flexslider1">
+                                <div className="slides_active">
+                                    {/* <img src={ `http://localhost:3000/images/products/${product_detail.image_group[0].image}` } data-imagezoom="true" className="img-fluid" alt=" " /> */}
+                                </div>
+                                <div className="flexslider1">
                                     <ul className="slides">
-                                        {
-                                            product_detail.image_group.map((item, idx) => {
-                                                return (
-                                                    <li data-thumb={ `http://localhost:3000/images/products/${ item.image }` } onClick={ () => setBanner(item.image) }>
-                                                        <div className="thumb-image"> <img src={ `http://localhost:3000/images/products/${ item.image }` } data-imagezoom="true" className="img-fluid" alt=" " /> </div>
-                                                    </li>
-                                                )
-                                            })
-                                        }
+                                        {/* <li data-thumb={ `http://localhost:3000/images/products/${product_detail.image_group[0].image}` } onClick={ () => setBanner(product_detail.image_group[0].image) }>
+                                            <div className="thumb-image"> <img src={ `http://localhost:3000/images/products/${product_detail.image_group[0].image}` } data-imagezoom="true" className="img-fluid" alt=" " /> </div>
+                                        </li>
+                                        <li data-thumb={ `http://localhost:3000/images/products/${product_detail.image_group[1].image}` } onClick={ () => setBanner(product_detail.image_group[1].image) }>
+                                            <div className="thumb-image"> <img src={ `http://localhost:3000/images/products/${product_detail.image_group[1].image}` } data-imagezoom="true" className="img-fluid" alt=" " /> </div>
+                                        </li>
+                                        <li data-thumb={ `http://localhost:3000/images/products/${product_detail.image_group[2].image}` } onClick={ () => setBanner(product_detail.image_group[2].image) }>
+                                            <div className="thumb-image"> <img src={ `http://localhost:3000/images/products/${product_detail.image_group[2].image}` } data-imagezoom="true" className="img-fluid" alt=" " /> </div>
+                                        </li> */}
                                     </ul>
                                     <div className="clearfix"></div>
-                                </div> */}
+                                </div>
                             </div>
                         </div>
                         <div className="col-lg-8 single-right-left simpleCart_shelfItem">
