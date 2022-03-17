@@ -7,7 +7,7 @@ import { getProduct, getCategory } from "../../redux/action/product-action";
 import NumberFormat from "react-number-format";
 
 function Product () {
-    const { addItem, inCart } = useCart();
+    const { addItem, inCart, items } = useCart();
     const [params, setParams] = useState({
         "product_name": "",
         "category_id": []
@@ -20,7 +20,6 @@ function Product () {
             category: state.product.category
         }
     });
-    console.log(data)
 
     useEffect(() => {
         dispatch(getProduct(params));
@@ -38,6 +37,32 @@ function Product () {
         event.preventDefault();
         dispatch(getProduct(params))
     }
+
+    const addItemCart = (item_checkout) => {
+        let disabledButton = false;
+        for (let i = 0; i < items.length; i++) {
+            if (items[0].id == item_checkout.id) {
+                if(items[0].quantity >= parseInt(item_checkout.quantity)) {
+                    console.log(item_checkout.quantity)
+                    console.log(items[0].quantity)
+                    disabledButton = true;
+                }
+            }
+        }
+        if (!disabledButton) {
+            return (
+                <button type="submit" className="googles-cart pgoogles-cart" onClick={ () => addItem(item_checkout)} >
+                    <i className="fas fa-cart-plus"></i>
+                </button>
+            )
+        } else {
+            return (
+                <button type="submit" className="googles-cart pgoogles-cart" disabled={true} >
+                    <i className="fas fa-cart-plus"></i>
+                </button>
+            )
+        }
+    } 
 
     return (
         <section className="banner-bottom-wthreelayouts py-lg-5 py-3">
@@ -146,7 +171,7 @@ function Product () {
                                                                     <div className="grid_meta">
                                                                         <div className="product_price">
                                                                             <h4>
-                                                                                <a onClick={ () => navigate(`/product/detail/${item.id}`)}>{ item.name }</a>
+                                                                                <a onClick={ () => navigate(`/product/detail/${item.id}`)}>{ item.product_name }</a>
                                                                             </h4>
                                                                             <div className="grid-price mt-2">
                                                                                 <span className="money ">
@@ -168,15 +193,15 @@ function Product () {
                                                                                         item.quantity < 3 ?
                                                                                         <span className='text-danger' style={{ fontSize: 12 }}> ({item.quantity} items)</span>
                                                                                         :
-                                                                                        <span style={{ fontSize: 12 }}> ({item.quantity} items)</span>
+                                                                                        <span style={{ fontSize: 12 }} className="text-muted"> Tersedia {item.quantity} items</span>
                                                                                     } 
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div className="googles single-item hvr-outline-out">
-                                                                        <button type="submit" className="googles-cart pgoogles-cart" onClick={ () => addItem(item)}>
-                                                                            <i className="fas fa-cart-plus"></i>
-                                                                        </button>
+                                                                        {
+                                                                            addItemCart(item)
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                                 <div className="clearfix"></div>

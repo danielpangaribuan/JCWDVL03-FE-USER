@@ -46,14 +46,14 @@ export const getCityByProvID = (id) => {
     }
 }
 
-export const getNearestWarehouse = (params) => {
+export const getDelivery = (destination, params) => {
     return async (dispatch) => {
         try {
+            // %5B1,2,3%5D
             dispatch({ type: START_GET_ONGKIR });
             console.log(params)
-            const { origin, destination, weight } = params;
             const query = `/ongkos/${destination}`;
-            const respond = await Axios.get(API_URL + query);
+            const respond = await Axios.get(API_URL + query, { params });
 
             dispatch({ type: GET_ONGKIR, payload: respond.data.data });
             console.log(respond.data.data)
