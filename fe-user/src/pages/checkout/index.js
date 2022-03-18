@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { useCart } from "react-use-cart";
-import { getWarehouseLocation } from "../../redux/action/product-action";
+import { getWarehouseLocation, getCheckout } from "../../redux/action/product-action";
 import { getProvince, getCityByProvID, getDelivery } from "../../redux/action/location-action";
 import NumberFormat from "react-number-format";
 import "./style.css";
@@ -11,30 +11,31 @@ const _ = require('lodash')
 
 // ========== GOOGLE MAPS PICKER API ==============
 function Checkout () {
+    const [deliveryFee, setdDliveryFee] = useState(0);
+    const [totalCheckout, setTotalCheckout] = useState(0);
     const [destination, setDestination] = useState(null);
     const [productCheckout, setProductCheckout] = useState([]);
     const [quantityCheckout, setQuantityCheckout] = useState([]);
+    const [payment, setPayment] = useState(false);
+    const [fillForm, setFillForm] = useState(true);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const {
-        isEmpty,
         cartTotal,
-        totalUniqueItems,
-        items,
-        updateItemQuantity,
-        removeItem,
-        emptyCart
+        items
     } = useCart();
     
-    const { warehouse, province, loadingProv, city, nearestWarehouse } = useSelector(state => {
+    const { warehouse, province, loadingProv, city, costDelivery, loadingCheckoutDetail, checkout } = useSelector(state => {
         return {
             warehouse : state.warehouse.data,
             province: state.location.province,
             loadingProv: state.location.loadingProv,
             city: state.location.city,
-            nearestWarehouse: state.location.nearestWarehouse
+            costDelivery: state.location.checkoutDetail.total_cost,
+            checkout: state.location.checkoutDetail,
+            loadingCheckoutDetail: state.location.loadingCheckoutDetail
         }
     });
 
@@ -46,7 +47,12 @@ function Checkout () {
             setProductCheckout(oldArray => [ ...oldArray, items[i].id])
             setQuantityCheckout(oldArray => [ ...oldArray, items[i].quantity ])
         }
-    }, []);
+        if (costDelivery) {
+            setdDliveryFee(costDelivery);
+            setTotalCheckout(cartTotal + costDelivery);
+            setPayment(true);
+        }
+    }, [loadingCheckoutDetail, costDelivery]);
 
     const renderCheckoutItem = () => {
         return (
@@ -98,7 +104,14 @@ function Checkout () {
     }
 
     const checkDelivery = () => {
+        if (!destination) return
         dispatch(getDelivery(destination, { product_id: JSON.stringify(productCheckout), quantity_p: JSON.stringify(quantityCheckout)}));
+    }
+
+    const paymentHandler = () => {
+        console.log(checkout)
+        localStorage.setItem('checkout', JSON.stringify(checkout));
+        navigate('/payment');
     }
 
     return (
@@ -119,15 +132,24 @@ function Checkout () {
                                 <ul className="item-group">
                                     { renderCheckoutItem() }
                                 </ul>
-                                <div className="check-delivery mx-2 mb-2">
-                                    <button className="btn btn-dark d-flex w-100 justify-content-between align-items-center"
-                                        onClick={ () => checkDelivery() } >
-                                        <div>
-                                            <span className="fas fa-truck text-success mr-2"></span>
-                                            Check Delivery
+                                <div className="checkout-sub-total d-flex justify-content-between align-items-center">
+                                    <span>Delivery Fee</span>
+                                    {
+                                        loadingCheckoutDetail === true ?
+                                        <div className="spinner-border" role="status">
+                                            <span className="sr-only">Loading...</span>
                                         </div>
-                                        <span className="fas fa-chevron-right"></span>
-                                    </button>
+                                        :
+                                        <NumberFormat
+                                            thousandsGroupStyle="thousand"
+                                            value={deliveryFee}
+                                            prefix="Rp. "
+                                            decimalSeparator="."
+                                            displayType="text"
+                                            type="text"
+                                            thousandSeparator={true}
+                                            allowNegative={true} /> 
+                                    }
                                 </div>
                                 <div className="checkout-sub-total d-flex justify-content-between align-items-center">
                                     <span>Subtotal</span>
@@ -141,6 +163,19 @@ function Checkout () {
                                         thousandSeparator={true}
                                         allowNegative={true} /> 
                                 </div>
+                                <div className="checkout-sub-total d-flex justify-content-between align-items-center">
+                                    <span>Total</span>
+                                    <NumberFormat
+                                        thousandsGroupStyle="thousand"
+                                        value={totalCheckout}
+                                        prefix="Rp. "
+                                        decimalSeparator="."
+                                        displayType="text"
+                                        type="text"
+                                        thousandSeparator={true}
+                                        allowNegative={true} /> 
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -152,47 +187,97 @@ function Checkout () {
                                     <div className="first-row form-group">
                                         <div className="controls">
                                             <label className="control-label">Full name: </label>
-                                            <input className="billing-address-name form-control" type="text" name="name" placeholder="Full name" />
+                                            <input 
+                                                className="billing-address-name form-control" 
+                                                type="text" 
+                                                name="name" 
+                                                required 
+                                                placeholder="Full name"
+                                                disabled={ payment == true ? true : false } />
                                         </div>
                                         <div className="card_number_grids">
                                             <div className="card_number_grid_left">
                                                 <div className="controls">
                                                     <label className="control-label">Mobile number:</label>
-                                                    <input className="form-control" type="text" placeholder="Mobile number" />
+                                                    <input 
+                                                        className="form-control" 
+                                                        type="text" 
+                                                        placeholder="Mobile number" 
+                                                        disabled={ payment == true ? true : false }
+                                                        required />
                                                 </div>
                                             </div>
                                             <div className="card_number_grid_right">
                                                 <div className="controls">
                                                     <label className="control-label">Landmark: </label>
-                                                    <input className="form-control" type="text" placeholder="Landmark" />
+                                                    <input 
+                                                        className="form-control" 
+                                                        type="text" 
+                                                        placeholder="Landmark" 
+                                                        disabled={ payment == true ? true : false }
+                                                        required />
                                                 </div>
                                             </div>
                                             <div className="clear"> </div>
                                         </div>
                                         <div className="controls">
                                             <label className="control-label">Full Address : </label>
-                                            <input className="form-control" type="text" placeholder="Full Address" />
+                                            <input 
+                                                className="form-control" 
+                                                type="text" 
+                                                placeholder="Full Address" 
+                                                disabled={ payment == true ? true : false }
+                                                required />
                                         </div>
                                         <div className="controls">
                                             <label className="control-label">Province : </label>
-                                            <select className="form-control option-w3ls" onChange={ (event) => setCityByProvID(event.target.value) }>
+                                            <select 
+                                                className="form-control option-w3ls" 
+                                                onChange={ (event) => setCityByProvID(event.target.value) }
+                                                required
+                                                disabled={ payment == true ? true : false }>
                                                 <option>Select Your Country</option>
                                                     { renderProvince() }
                                             </select>
                                         </div>
                                         <div className="controls">
                                             <label className="control-label">City : </label>
-                                            <select className="form-control option-w3ls" onChange={ (event) => setDestination(event.target.value) }>
+                                            <select 
+                                                className="form-control option-w3ls" 
+                                                required 
+                                                disabled={ payment == true ? true : false }
+                                                onChange={ (event) => setDestination(event.target.value) }>
                                                 <option>Select Your City</option>
                                                     { renderCity() }
                                             </select>
                                         </div>
                                         <div className="controls">
                                             <label className="control-label">Postal Code : </label>
-                                            <input className="form-control" type="text" placeholder="Postal Code" />
+                                            <input 
+                                                className="form-control" 
+                                                type="text" 
+                                                placeholder="Postal Code" 
+                                                disabled={ payment == true ? true : false }
+                                                required />
                                         </div>
                                     </div>
-                                    <button className="submit check_out btn btn-block btn-dark" onClick={ () => navigate('/payment')}>Make a Payment</button>
+
+                                    <div className="d-flex justify-content-between">
+                                        <a className="text-white btn btn-dark d-flex w-100 justify-content-between align-items-center mr-1"
+                                            disabled={ payment == true ? true : false }
+                                            onClick={ () => checkDelivery() } >
+                                            <div>
+                                                <span className="fas fa-truck text-success mr-2"></span>
+                                                Check Delivery
+                                            </div>
+                                            <span className="fas fa-chevron-right"></span>
+                                        </a>
+                                        <a className="text-white submit check_out btn d-flex w-100 justify-content-between align-items-center btn-success ml-1"
+                                            disabled={ payment == true ? false : true }
+                                            onClick={ () => paymentHandler() }>
+                                                Make a Payment
+                                        </a>
+                                    </div>
                                 </div>
                             </section>
                         </form>

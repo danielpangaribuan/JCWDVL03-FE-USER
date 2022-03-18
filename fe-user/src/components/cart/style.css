@@ -1,12 +1,17 @@
 .cart-wrapper {
     position: fixed;
     top: 0;
-    right: 0;
     bottom: 0;
+    right: -400px;
     background: #454546;
     width: 400px;
     z-index: 999;
     overflow: auto;
+    transition: all .3s;
+}
+
+.cart-wrapper.open {
+    right: 0;
 }
 
 .cart-wrapper h1 {

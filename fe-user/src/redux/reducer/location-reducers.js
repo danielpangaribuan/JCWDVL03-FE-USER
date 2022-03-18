@@ -15,8 +15,8 @@ const INITIAL_STATE = {
     city: [],
     loadingProv: false,
     loadingCity: false,
-    nearestWarehouse: [],
-    loadingNearestWarehouse: false
+    checkoutDetail: [],
+    loadingCheckoutDetail: false
 }
 
 export const LocationReducer = (state = INITIAL_STATE, action) => {
@@ -38,11 +38,11 @@ export const LocationReducer = (state = INITIAL_STATE, action) => {
 
 
         case START_GET_ONGKIR:
-            return { ...state, loadingOngkir: true }
+            return { ...state, loadingCheckoutDetail: true }
         case GET_ONGKIR:
-            return { ...state, nearestWarehouse: action.payload }
+            return { ...state, checkoutDetail: action.payload }
         case END_GET_ONGKIR:
-            return { ...state, loadingNearestWarehouse: false }
+            return { ...state, loadingCheckoutDetail: false }
         default:
             return state
     }

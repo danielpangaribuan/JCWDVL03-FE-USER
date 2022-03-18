@@ -58,3 +58,14 @@ export const getWarehouseLocation = (id) => {
         }
     }
 }
+
+export const getCheckout = (item) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: "GET_CHECKOUT_ITEM", payload: item })
+            console.log(item)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}

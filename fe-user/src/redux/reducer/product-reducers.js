@@ -4,6 +4,7 @@ const INITIAL_STATE = {
     data: [],
     category: [],
     product_detail: [],
+    checkout: [],
     product_detail_loading: false
 }
 
@@ -19,6 +20,8 @@ export const ProductReducer = (state = INITIAL_STATE, action) => {
             return { ...state, product_detail_loading: true }
         case END_GET_PRODUCT_DETAIL:
             return { ...state, product_detail_loading: false }
+        case "GET_CHECKOUT_ITEM":
+            return { ...state, checkout_item: action.payload }
         default:
             return state;
     }

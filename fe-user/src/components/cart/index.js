@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CartProvider, useCart } from "react-use-cart";
 import NumberFormat from "react-number-format";
@@ -9,16 +10,28 @@ function Cart (props) {
     const navigate = useNavigate();
     const {
         isEmpty,
-        cartTotal,
-        totalUniqueItems,
         items,
         updateItemQuantity,
         removeItem,
         emptyCart
     } = useCart();
 
+    const { data } = useSelector(state => {
+        return {
+            data: state.auth.data,
+        }
+    });
+
+    const checkoutHandler = () => {
+        if (localStorage.getItem('token')) {
+            navigate('/checkout')
+        } else {
+            alert('You have to login!')
+        }
+    }
+
     return (
-        <div className="cart-wrapper" style={{ display: props.showCart == true ? 'block' : 'none' }}>
+        <div className={props.showCart == true ? 'cart-wrapper open' : 'cart-wrapper' } >
             <div className="d-flex">
                 <button 
                     className="btn btn-transparent text-secondary" 
@@ -37,12 +50,20 @@ function Cart (props) {
                     <h3 className="text-center mt-5 text-secondary">Your Cart is Empty</h3>
                     :
                     <>
-                        <button 
-                            className="btn btn-success ml-3" 
-                            id="checkoutCart"
-                            onClick={ () => navigate('/checkout')} >
-                            Checkout
-                        </button>
+                        <div className="d-flex justify-content-between align-items-center px-3">
+                            <button 
+                                className="btn btn-success" 
+                                id="checkoutCart"
+                                onClick={ () => checkoutHandler() } >
+                                <span className="fas fa-shopping-cart mr-2"></span>Checkout
+                            </button>
+                            <button 
+                                className="btn btn-danger" 
+                                id="checkoutCart"
+                                onClick={ () => emptyCart()} >
+                                <span className="fas fa-trash-alt mr-2"></span>Delete All
+                            </button>
+                        </div>
 
 
                         <ul className="cart-menu">

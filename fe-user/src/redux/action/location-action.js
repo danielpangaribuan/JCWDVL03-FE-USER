@@ -21,7 +21,6 @@ export const getProvince = () => {
             const respond = await Axios.get(API_URL + query);
 
             dispatch({ type: GET_PROVINCE, payload: respond.data.rajaongkir.results });
-            // console.log(respond.data.rajaongkir.results);
             dispatch({ type: END_GET_PROVINCE })
         } catch (error) {
             dispatch({ type: END_GET_PROVINCE })
@@ -56,7 +55,6 @@ export const getDelivery = (destination, params) => {
             const respond = await Axios.get(API_URL + query, { params });
 
             dispatch({ type: GET_ONGKIR, payload: respond.data.data });
-            console.log(respond.data.data)
             dispatch({ type: END_GET_ONGKIR });
         } catch (error) {
             dispatch({ type: END_GET_ONGKIR });

@@ -8,12 +8,14 @@ import { AuthUserReducer } from "../redux/reducer/auth-reducers";
 import { ProductReducer } from "../redux/reducer/product-reducers";
 import { WarehouseReducer } from "../redux/reducer/warehouse-reducers";
 import { LocationReducer } from "../redux/reducer/location-reducers";
+import { ComboReducer } from "../redux/reducer/combo-reducers";
 
 const Reducers = combineReducers({
   auth: AuthUserReducer,
   product: ProductReducer,
   warehouse: WarehouseReducer,
-  location: LocationReducer
+  location: LocationReducer,
+  combo: ComboReducer
 });
 
 // export function, ikutin dulu aja formatnya
