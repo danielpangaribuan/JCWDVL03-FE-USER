@@ -54,7 +54,8 @@ function Header(props) {
   // console.log("error :", error);
   // dispatch(AuthUserLogin);
 
-  const onButtonLogin = () => {
+  const onButtonLogin = (e) => {
+    e.preventDefault();
     const body = { username, password }; //Data yang mau dikirim ke API
     dispatch(AuthUserLogin(body));
   };
