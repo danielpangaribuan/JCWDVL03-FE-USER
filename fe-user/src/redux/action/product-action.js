@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { GET_PRODUCT, GET_CATEGORY, GET_PRODUCT_DETAIL, GET_WAREHOUSE, START_GET_PRODUCT_DETAIL, END_GET_PRODUCT_DETAIL } from "./type";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "http://localhost:2000";
 
 export const getProduct = (params) => {
     return async (dispatch) => {

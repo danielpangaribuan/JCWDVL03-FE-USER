@@ -9,8 +9,6 @@ import NumberFormat from "react-number-format";
 import { Formik, Form, Field } from "formik";
 import "./style.css";
 
-const _ = require('lodash')
-
 // ========== GOOGLE MAPS PICKER API ==============
 function Checkout () {
     const [idUser, setIDUser] = useState(null);
@@ -240,7 +238,7 @@ function Checkout () {
                                                         name="fullname" 
                                                         required 
                                                         placeholder="Full name"
-                                                        disabled={ payment == true ? true : false } />
+                                                        disabled={ payment === true ? true : false } />
                                                 </div>
                                                 <div className="card_number_grids">
                                                     <div className="card_number_grid_left">
@@ -250,7 +248,7 @@ function Checkout () {
                                                                 className="form-control" 
                                                                 name="mobile_number"
                                                                 placeholder="Mobile number" 
-                                                                disabled={ payment == true ? true : false }
+                                                                disabled={ payment === true ? true : false }
                                                                 required />
                                                         </div>
                                                     </div>
@@ -262,7 +260,7 @@ function Checkout () {
                                                                 type="text" 
                                                                 name="landmark"
                                                                 placeholder="Landmark"
-                                                                disabled={ payment == true ? true : false }
+                                                                disabled={ payment === true ? true : false }
                                                                 required />
                                                         </div>
                                                     </div>
@@ -275,7 +273,7 @@ function Checkout () {
                                                         type="text" 
                                                         placeholder="Full Address" 
                                                         name="full_address"
-                                                        disabled={ payment == true ? true : false }
+                                                        disabled={ payment === true ? true : false }
                                                         required />
                                                 </div>
                                                 <div className="controls">
@@ -286,7 +284,7 @@ function Checkout () {
                                                         className="form-control option-w3ls"
                                                         value={provSelected}
                                                         onChange={(event) => handleProv(event)}
-                                                        disabled={ payment == true ? true : false }
+                                                        disabled={ payment === true ? true : false }
                                                     >
                                                         <option>Select Your Country</option>
                                                             { renderProvince() }
@@ -297,7 +295,7 @@ function Checkout () {
                                                     <Field as="select" 
                                                         required 
                                                         className="form-control option-w3ls"
-                                                        disabled={ payment == true ? true : false }
+                                                        disabled={ payment === true ? true : false }
                                                         value={citySelected}
                                                         onChange={ (event) => handleCity(event) }
                                                         name="city_id"
@@ -313,7 +311,7 @@ function Checkout () {
                                                         type="text" 
                                                         name="postal_code"
                                                         placeholder="Postal Code" 
-                                                        disabled={ payment == true ? true : false }
+                                                        disabled={ payment === true ? true : false }
                                                         required />
                                                 </div>
                                             </div>
@@ -326,7 +324,7 @@ function Checkout () {
                                                     Check Delivery
                                                 </a>
                                                 <button className="text-white submit check_out btn d-flex w-100 justify-content-between align-items-center btn-success ml-1"
-                                                    // disabled={ payment == true ? false : true }
+                                                    // disabled={ payment === true ? false : true }
                                                     type="submit"
                                                 >
                                                     Make a Payment

@@ -33,13 +33,13 @@ function Header(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    $(".button-log .btn-login").on('click', function () {
+    $("#btnLogin").on('click', function () {
       $(".overlay-login").fadeToggle(200);
-      $(this).toggleClass("btn-open").toggleClass("btn-close");
+      // $(this).toggleClass("btn-open").toggleClass("btn-close");
     });
-    $(".overlay-close1").on("click", function () {
+    $("#overlay-close1").on("click", function () {
       $(".overlay-login").fadeToggle(200);
-      $(".button-log .btn-login").toggleClass("btn-open").toggleClass("btn-close");
+      // $("#btnLogin").toggleClass("btn-open").toggleClass("btn-close");
       // open = false;
     });
   }, []);
@@ -123,242 +123,247 @@ function Header(props) {
                     </li>
                   ) : (
                     <li className="button-log">
-                      <a className="btn-open btn-login" style={{ cursor: 'pointer' }}>
+                      <a className="btn-open btn-login" id="btnLogin" style={{ cursor: 'pointer' }}>
                         <span className="fa fa-user" aria-hidden="true"></span>
                       </a>
                     </li>
                   )}
-                  <div className="overlay-login text-left">
-                    <button type="button" className="overlay-close1">
-                      <i className="fa fa-times" aria-hidden="true"></i>
-                    </button>
 
-                    {registerForm === false ? (
-                      <div className="wrap">
-                        <h5 className="text-center mb-4">Login Now</h5>
-                        <div className="login p-5 bg-dark mx-auto mw-100">
-                          <Form className="form-body">
-                            <Form.Group
-                              className="mb-3"
-                              controlId="formBasicEmail"
-                            >
-                              <Form.Label className="modal-title">
-                                Username
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Username"
-                                onChange={(e) => setUserName(e.target.value)}
-                              />
-                              <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
-                              </Form.Text>
-                            </Form.Group>
-                            <Form.Group
-                              className="form-password"
-                              controlId="formBasicPassword"
-                            >
-                              <Form.Label
-                                className="modal-title"
-                                autoComplete="on"
-                              >
-                                Password
-                              </Form.Label>
-                              <Form.Control
-                                type="password"
-                                placeholder="password"
-                                onChange={(e) => setPassword(e.target.value)}
-                              />
-                              {error ? (
-                                <Form.Text className="error">{error}</Form.Text>
-                              ) : null}
-                            </Form.Group>
-
-                            <Form.Group
-                              className="checkbox"
-                              controlId="formBasicCheckbox"
-                            >
-                              <Form.Check
-                                type="checkbox"
-                                label="Remember Me"
-                                className="text-white"
-                              />
-                            </Form.Group>
-                            <div>
-                              <Button
-                                className="button-signin"
-                                // variant="warning"
-                                type="submit"
-                                onClick={onButtonLogin}
-                              >
-                                Login
-                              </Button>
-                              <p>
-                                Don't have an account ?
-                                <button
-                                  className="button-register-now"
-                                  onClick={() => setRegisterForm(true)}
-                                >
-                                  Register Now
-                                </button>
-                              </p>
-                            </div>
-                          </Form>
-                        </div>
-                      </div>
+                  {data ? (
+                    ''
                     ) : (
-                      <div className="wrap">
-                        <h5 className="text-center mb-4">Register</h5>
-                        <div className="login p-5 bg-dark mx-auto mw-100">
-                          <Form className="form-body">
-                            <Form.Group
-                              className="mb-3"
-                              controlId="formBasicEmail"
-                            >
-                              <Form.Label className="modal-title">
-                                Email
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Email"
-                                onChange={(e) =>
-                                  setEmailRegister(e.target.value)
-                                }
-                              />
-                            </Form.Group>
-                            <Form.Group
-                              className="form-password"
-                              controlId="formBasicPassword"
-                            >
-                              <Form.Label className="modal-title">
-                                Password
-                              </Form.Label>
-                              <Form.Control
-                                type="password"
-                                placeholder="Password"
-                                onChange={(e) =>
-                                  setPasswordRegister(e.target.value)
-                                }
-                              />
-                            </Form.Group>
-                            <Form.Group
-                              className="form-password"
-                              controlId="formBasicPassword"
-                            >
-                              <Form.Label
-                                className="modal-title"
-                                autoComplete="on"
+                    
+                    <div className="overlay-login text-left">
+                      <button type="button" id="overlay-close1">
+                        <i className="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                      {registerForm === false ? (
+                        <div className="wrap">
+                          <h5 className="text-center mb-4">Login Now</h5>
+                          <div className="login p-5 bg-dark mx-auto mw-100">
+                            <Form className="form-body">
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formBasicEmail"
                               >
-                                Re-Password
-                              </Form.Label>
-                              <Form.Control
-                                type="password"
-                                placeholder="re-password"
-                                onChange={(e) =>
-                                  setRePasswordRegister(e.target.value)
-                                }
-                              />
-                              {/* {error ? (
-                              <Form.Text className="error">{error}</Form.Text>
-                            ) : null} */}
-                            </Form.Group>
-                            <Form.Group
-                              className="form-password"
-                              controlId="formBasicPassword"
-                            >
-                              <Form.Label className="modal-title">
-                                Username
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Username"
-                                onChange={(e) =>
-                                  setUserNameRegister(e.target.value)
-                                }
-                              />
-                            </Form.Group>
-                            <Form.Group
-                              className="form-password"
-                              controlId="formBasicPassword"
-                            >
-                              <Form.Label className="modal-title">
-                                Fullname
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Fullname"
-                                onChange={(e) =>
-                                  setFullNameRegister(e.target.value)
-                                }
-                              />
-                            </Form.Group>
-                            <Form.Group
-                              className="form-password"
-                              controlId="formBasicPassword"
-                            >
-                              <Form.Label className="modal-title">
-                                Date Of Birth
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="1997-08-06"
-                                onChange={(e) =>
-                                  setDateOfBirthRegister(e.target.value)
-                                }
-                              />
-                            </Form.Group>
-                            <Form.Group
-                              className="form-password"
-                              controlId="formBasicPassword"
-                            >
-                              <Form.Label className="modal-title">
-                                Gender
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Laki - laki atau Perempuan"
-                                onChange={(e) =>
-                                  setGenderRegister(e.target.value)
-                                }
-                              />
-                            </Form.Group>
-                            <Form.Group
-                              className="checkbox"
-                              controlId="formBasicCheckbox"
-                            >
-                              <Form.Check
-                                type="checkbox"
-                                label="Remember Me"
-                                className="text-white"
-                              />
-                            </Form.Group>
-                            <div>
-                              <Button
-                                className="button-signin"
-                                // variant="warning"
-                                type="submit"
-                                onClick={onButtonRegister}
+                                <Form.Label className="modal-title">
+                                  Username
+                                </Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Username"
+                                  onChange={(e) => setUserName(e.target.value)}
+                                />
+                                <Form.Text className="text-muted">
+                                  We'll never share your email with anyone else.
+                                </Form.Text>
+                              </Form.Group>
+                              <Form.Group
+                                className="form-password"
+                                controlId="formBasicPassword"
                               >
-                                Register
-                              </Button>
-                              {error ? (
-                                <Form.Text className="error">{error}</Form.Text>
-                              ) : null}
-                              <p>
-                                Already have an account ?
-                                <button
-                                  className="button-register-now"
-                                  onClick={() => setRegisterForm(false)}
+                                <Form.Label
+                                  className="modal-title"
+                                  autoComplete="on"
                                 >
-                                  Login Now
-                                </button>
-                              </p>
-                            </div>
-                          </Form>
+                                  Password
+                                </Form.Label>
+                                <Form.Control
+                                  type="password"
+                                  placeholder="password"
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
+                                {error ? (
+                                  <Form.Text className="error">{error}</Form.Text>
+                                ) : null}
+                              </Form.Group>
+
+                              <Form.Group
+                                className="checkbox"
+                                controlId="formBasicCheckbox"
+                              >
+                                <Form.Check
+                                  type="checkbox"
+                                  label="Remember Me"
+                                  className="text-white"
+                                />
+                              </Form.Group>
+                              <div>
+                                <Button
+                                  className="button-signin"
+                                  // variant="warning"
+                                  type="submit"
+                                  onClick={onButtonLogin}
+                                >
+                                  Login
+                                </Button>
+                                <p>
+                                  Don't have an account ?
+                                  <button
+                                    className="button-register-now"
+                                    onClick={() => setRegisterForm(true)}
+                                  >
+                                    Register Now
+                                  </button>
+                                </p>
+                              </div>
+                            </Form>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="wrap">
+                          <h5 className="text-center mb-4">Register</h5>
+                          <div className="login p-5 bg-dark mx-auto mw-100">
+                            <Form className="form-body">
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formBasicEmail"
+                              >
+                                <Form.Label className="modal-title">
+                                  Email
+                                </Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Email"
+                                  onChange={(e) =>
+                                    setEmailRegister(e.target.value)
+                                  }
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="form-password"
+                                controlId="formBasicPassword"
+                              >
+                                <Form.Label className="modal-title">
+                                  Password
+                                </Form.Label>
+                                <Form.Control
+                                  type="password"
+                                  placeholder="Password"
+                                  onChange={(e) =>
+                                    setPasswordRegister(e.target.value)
+                                  }
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="form-password"
+                                controlId="formBasicPassword"
+                              >
+                                <Form.Label
+                                  className="modal-title"
+                                  autoComplete="on"
+                                >
+                                  Re-Password
+                                </Form.Label>
+                                <Form.Control
+                                  type="password"
+                                  placeholder="re-password"
+                                  onChange={(e) =>
+                                    setRePasswordRegister(e.target.value)
+                                  }
+                                />
+                                {/* {error ? (
+                                <Form.Text className="error">{error}</Form.Text>
+                              ) : null} */}
+                              </Form.Group>
+                              <Form.Group
+                                className="form-password"
+                                controlId="formBasicPassword"
+                              >
+                                <Form.Label className="modal-title">
+                                  Username
+                                </Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Username"
+                                  onChange={(e) =>
+                                    setUserNameRegister(e.target.value)
+                                  }
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="form-password"
+                                controlId="formBasicPassword"
+                              >
+                                <Form.Label className="modal-title">
+                                  Fullname
+                                </Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Fullname"
+                                  onChange={(e) =>
+                                    setFullNameRegister(e.target.value)
+                                  }
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="form-password"
+                                controlId="formBasicPassword"
+                              >
+                                <Form.Label className="modal-title">
+                                  Date Of Birth
+                                </Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="1997-08-06"
+                                  onChange={(e) =>
+                                    setDateOfBirthRegister(e.target.value)
+                                  }
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="form-password"
+                                controlId="formBasicPassword"
+                              >
+                                <Form.Label className="modal-title">
+                                  Gender
+                                </Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Laki - laki atau Perempuan"
+                                  onChange={(e) =>
+                                    setGenderRegister(e.target.value)
+                                  }
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="checkbox"
+                                controlId="formBasicCheckbox"
+                              >
+                                <Form.Check
+                                  type="checkbox"
+                                  label="Remember Me"
+                                  className="text-white"
+                                />
+                              </Form.Group>
+                              <div>
+                                <Button
+                                  className="button-signin"
+                                  // variant="warning"
+                                  type="submit"
+                                  onClick={onButtonRegister}
+                                >
+                                  Register
+                                </Button>
+                                {error ? (
+                                  <Form.Text className="error">{error}</Form.Text>
+                                ) : null}
+                                <p>
+                                  Already have an account ?
+                                  <button
+                                    className="button-register-now"
+                                    onClick={() => setRegisterForm(false)}
+                                  >
+                                    Login Now
+                                  </button>
+                                </p>
+                              </div>
+                            </Form>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     )}
-                  </div>
                   <li className="galssescart galssescart2 cart cart box_1">
                     <button
                       className="top_googles_cart"

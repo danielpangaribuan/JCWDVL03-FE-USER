@@ -3,6 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import ProfileDetail from "./tabs/profile-detail";
 import Transaction from "./tabs/transaction";
 import TransactionHistory from "./tabs/transaction-history";
+import './style.css';
 
 function Profile () {
 

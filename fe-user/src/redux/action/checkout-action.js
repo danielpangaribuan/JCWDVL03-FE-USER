@@ -6,7 +6,7 @@ import {
     END_GET_TRANSACTION 
 } from "./type";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "http://localhost:2000";
 
 export const addTransaction = (body) => {
     return async (dispatch) => {
@@ -26,7 +26,7 @@ export const getTransaction = (user_id) => {
         try {
             dispatch({ type: START_GET_TRANSACTION });
             const query = `/getTransactionStatus/${user_id}`;
-            const respond = await Axios.get(API_URL, query);
+            const respond = await Axios.get(API_URL + query);
 
             dispatch({ type: GET_TRANSACTION, payload: respond.data.data });
             dispatch({ type: END_GET_TRANSACTION });

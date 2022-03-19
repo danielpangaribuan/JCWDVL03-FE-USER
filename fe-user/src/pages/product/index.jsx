@@ -42,7 +42,7 @@ function Product () {
     const addItemCart = (item_checkout) => {
         let disabledButton = false;
         for (let i = 0; i < items.length; i++) {
-            if (items[0].id == item_checkout.id) {
+            if (items[0].id === item_checkout.id) {
                 if(items[0].quantity >= parseInt(item_checkout.quantity)) {
                     console.log(item_checkout.quantity)
                     console.log(items[0].quantity)

@@ -6,7 +6,7 @@ import { CartProvider } from "react-use-cart";
 import Header from "./components/header";
 import Cart from "./components/cart";
 import Footer from "./components/footer";
-import Carrousel from "./components/carousel";
+// import Carrousel from "./components/carousel";
 import $ from "jquery";
 // import Register from "./pages/register";
 import Home from "./pages/home";
@@ -27,6 +27,7 @@ function Main() {
   const [showCart, setShowCart] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(AuthUserKeepLogin());
 
     $(document).on('click', function(e) {
       let cart_wrapper = $('.cart-wrapper');
@@ -36,7 +37,6 @@ function Main() {
       }
     });
 
-    dispatch(AuthUserKeepLogin());
   }, []);
 
   return (

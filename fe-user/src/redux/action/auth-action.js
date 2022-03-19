@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { START_AUTH, END_AUTH, USER_LOGIN, USER_LOGOUT } from "./type";
 
-const API_URL = process.env.REACT_APP_API_URL + "/api/auth";
+const API_URL = "http://localhost:2000/api/auth";
 export const AuthUserLogin = (body) => {
   return async (dispatch) => {
     try {

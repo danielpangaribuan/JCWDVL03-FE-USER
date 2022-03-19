@@ -31,7 +31,7 @@ function Cart (props) {
     }
 
     return (
-        <div className={props.showCart == true ? 'cart-wrapper open' : 'cart-wrapper' } >
+        <div className={props.showCart === true ? 'cart-wrapper open' : 'cart-wrapper' } >
             <div className="d-flex">
                 <button 
                     className="btn btn-transparent text-secondary" 

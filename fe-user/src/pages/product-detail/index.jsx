@@ -7,7 +7,7 @@ import NumberFormat from "react-number-format";
 import { useCart } from "react-use-cart";
 import './style.css'
 
-const API_URL = process.env.REACT_APP_API_URL
+// const API_URL = "http://localhost:2000"
 
 const ProductDetails = (props) => {
     const { addItem, inCart } = useCart();
@@ -17,9 +17,8 @@ const ProductDetails = (props) => {
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    const { UID, product_detail, product_detail_loading } = useSelector(state => {
+    const { product_detail } = useSelector(state => {
         return {
-            // UID : state.user.UID,
             product_detail : state.product.product_detail,
             product_detail_loading : state.product.product_detail_loading
         }
