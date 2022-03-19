@@ -6,8 +6,9 @@ import { useCart } from "react-use-cart";
 import { getProduct, getCategory } from "../../redux/action/product-action";
 import NumberFormat from "react-number-format";
 
+
 function Product () {
-    const { addItem, inCart, items } = useCart();
+    const { addItem, items } = useCart();
     const [params, setParams] = useState({
         "product_name": "",
         "category_id": []

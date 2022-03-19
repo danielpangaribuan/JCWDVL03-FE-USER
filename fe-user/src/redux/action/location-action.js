@@ -11,7 +11,7 @@ import {
     END_GET_ONGKIR
 } from "./type";
 
-const API_URL = "http://localhost:2000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const getProvince = () => {
     return async (dispatch) => {

@@ -12,6 +12,7 @@ import $ from "jquery";
 import Home from "./pages/home";
 import Checkout from "./pages/checkout";
 import Payment from "./pages/payment";
+import Profile from "./pages/profile";
 // import Login from "./pages/login";
 import Products from "./pages/product";
 import { useDispatch } from "react-redux";
@@ -26,6 +27,15 @@ function Main() {
   const [showCart, setShowCart] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+
+    $(document).on('click', function(e) {
+      let cart_wrapper = $('.cart-wrapper');
+      let cart_button = $('.top_googles_cart')
+      if (!cart_wrapper.is(e.target) && !cart_wrapper.has(e.target).length && !cart_button.is(e.target) && !cart_button.has(e.target).length) {
+        setShowCart(false)
+      }
+    });
+
     dispatch(AuthUserKeepLogin());
   }, []);
 
@@ -49,10 +59,11 @@ function Main() {
             </Route>
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
           <Cart
             showCart={showCart}
-            buttonCloseCart={() => setShowCart(false)}
+            buttonCloseCart={() => setShowCart(false) }
           />
           <Footer />
         </CartProvider>

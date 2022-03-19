@@ -1,14 +1,14 @@
 import Axios from "axios";
 import { GET_PRODUCT, GET_CATEGORY, GET_PRODUCT_DETAIL, GET_WAREHOUSE, START_GET_PRODUCT_DETAIL, END_GET_PRODUCT_DETAIL } from "./type";
 
-const API_URL = "http://localhost:2000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const getProduct = (params) => {
     return async (dispatch) => {
         try {
             const query = '/products';
             const respond = await Axios.get(API_URL + query, { params });
-
+            console.log(API_URL)
             dispatch({ type: GET_PRODUCT, payload: respond.data.data });
         } catch (error) {
             console.log(error)

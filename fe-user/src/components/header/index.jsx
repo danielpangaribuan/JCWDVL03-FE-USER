@@ -8,7 +8,7 @@ import {
   AuthUserLogOut,
   AuthUserRegister,
 } from "../../redux/action/auth-action";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
@@ -33,15 +33,13 @@ function Header(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    $(document).ready(function () {
-      $(".button-log a").click(function () {
-        $(".overlay-login").fadeToggle(200);
-        $(this).toggleClass("btn-open").toggleClass("btn-close");
-      });
+    $(".button-log .btn-login").on('click', function () {
+      $(".overlay-login").fadeToggle(200);
+      $(this).toggleClass("btn-open").toggleClass("btn-close");
     });
     $(".overlay-close1").on("click", function () {
       $(".overlay-login").fadeToggle(200);
-      $(".button-log a").toggleClass("btn-open").toggleClass("btn-close");
+      $(".button-log .btn-login").toggleClass("btn-open").toggleClass("btn-close");
       // open = false;
     });
   }, []);
@@ -95,8 +93,8 @@ function Header(props) {
       {/* ==================== HEADER ====================*/}
       <div className="banner-top container-fluid" id="home">
         <header className="px-0">
-          <div className="px-5">
-            <div className="row">
+          <div>
+            <div className="row px-5">
               <div className="col-md-3 top-info text-left mt-lg-4">
                 <h6>Need Help</h6>
                 <ul>
@@ -117,11 +115,19 @@ function Header(props) {
 
               <div className=" flex col-md-3 top-info-cart text-right mt-lg-4">
                 <ul className="cart-inner-info">
-                  <li className="button-log">
-                    <a className="btn-open" href="#">
-                      <span className="fa fa-user" aria-hidden="true"></span>
-                    </a>
-                  </li>
+                  {data ? (
+                    <li className="button-profile">
+                      <a className="btn btn-transparent"  onClick={ () => navigate('/profile') }>
+                        <span className="fa fa-user" aria-hidden="true"></span> Profile
+                      </a>
+                    </li>
+                  ) : (
+                    <li className="button-log">
+                      <a className="btn-open btn-login" style={{ cursor: 'pointer' }}>
+                        <span className="fa fa-user" aria-hidden="true"></span>
+                      </a>
+                    </li>
+                  )}
                   <div className="overlay-login text-left">
                     <button type="button" className="overlay-close1">
                       <i className="fa fa-times" aria-hidden="true"></i>
@@ -365,7 +371,7 @@ function Header(props) {
                   {data ? (
                     <Button
                       className="logout-button"
-                      variant="primary"
+                      variant="dark"
                       onClick={onButtonLogOut}
                     >
                       Logout
@@ -375,31 +381,6 @@ function Header(props) {
                   )}
                 </ul>
               </div>
-            </div>
-            <div className="search">
-              <div className="mobile-nav-button">
-                <button id="trigger-overlay" type="button">
-                  <i className="fas fa-search"></i>
-                </button>
-              </div>
-              {/*<!-- open/close -->*/}
-              <div className="overlay overlay-door">
-                <button type="button" className="overlay-close">
-                  <i className="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <form action="#" method="post" className="d-flex">
-                  <input
-                    className="form-control"
-                    type="search"
-                    placeholder="Search here..."
-                    required=""
-                  />
-                  <button type="submit" className="btn btn-primary submit">
-                    <i className="fas fa-search"></i>
-                  </button>
-                </form>
-              </div>
-              {/*<!-- open/close -->*/}
             </div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light top-header mb-2">
               <button

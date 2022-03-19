@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useCart } from "react-use-cart";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { addTransaction } from "../../redux/action/checkout-action";
 import { getComboBank } from "../../redux/action/combo-action";
 import { Button, Card } from 'react-bootstrap';
 import NumberFormat from "react-number-format";
@@ -10,13 +12,16 @@ function Payment () {
     const [IDBank, setIDBank] = useState();
     const [checkoutItem, setCheckoutItem] = useState();
     const [checkoutDeliveryCost, setCheckoutDeliveryCost] = useState();
+    const navigate = useNavigate();
     const {
         cartTotal,
         items
     } = useCart();
 
-    const { combo_bank, bank_loading } = useSelector(state => {
+    const { user_id, address_id, combo_bank, bank_loading } = useSelector(state => {
         return {
+            user_id: state.auth.data.id,
+            address_id: state.user.address_id,
             combo_bank: state.combo.bank,
             bank_loading: state.combo.bankLoading
         }
@@ -28,7 +33,6 @@ function Payment () {
         let checkout = JSON.parse(localStorage.getItem('checkout')) || [];
         setCheckoutItem(checkout.checkout_item);
         setCheckoutDeliveryCost(checkout.total_cost);
-
     }, [])
 
     const renderComboBank = () => {
@@ -92,7 +96,16 @@ function Payment () {
     }
 
     const handlerConfirm = () => {
-        
+        const body = {
+            total_price: cartTotal + checkoutDeliveryCost,
+            delivery_fee: checkoutDeliveryCost,
+            user_id: user_id,
+            bank_id: IDBank,
+            checkout_item: checkoutItem,
+            user_address_id : address_id
+        }
+        dispatch(addTransaction(body));
+        navigate('/profile');
     }
 
     return (

@@ -3,17 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { useCart } from "react-use-cart";
 import { getWarehouseLocation, getCheckout } from "../../redux/action/product-action";
+import { addAddressUser } from "../../redux/action/user-action";
 import { getProvince, getCityByProvID, getDelivery } from "../../redux/action/location-action";
 import NumberFormat from "react-number-format";
+import { Formik, Form, Field } from "formik";
 import "./style.css";
 
 const _ = require('lodash')
 
 // ========== GOOGLE MAPS PICKER API ==============
 function Checkout () {
+    const [idUser, setIDUser] = useState(null);
+    const [citySelected, setCitySelected] = useState();
+    const [citySelectedText, setCitySelectedText] = useState();
+    const [provSelected, setProvSelected] = useState();
+    const [provSelectedText, setProvSelectedText] = useState();
     const [deliveryFee, setdDliveryFee] = useState(0);
     const [totalCheckout, setTotalCheckout] = useState(0);
-    const [destination, setDestination] = useState(null);
     const [productCheckout, setProductCheckout] = useState([]);
     const [quantityCheckout, setQuantityCheckout] = useState([]);
     const [payment, setPayment] = useState(false);
@@ -27,9 +33,9 @@ function Checkout () {
         items
     } = useCart();
     
-    const { warehouse, province, loadingProv, city, costDelivery, loadingCheckoutDetail, checkout } = useSelector(state => {
+    const { isLogin, province, loadingProv, city, costDelivery, loadingCheckoutDetail, checkout } = useSelector(state => {
         return {
-            warehouse : state.warehouse.data,
+            isLogin: state.auth.data,
             province: state.location.province,
             loadingProv: state.location.loadingProv,
             city: state.location.city,
@@ -40,6 +46,8 @@ function Checkout () {
     });
 
     useEffect(() => {
+        if (!isLogin) navigate("/");
+        else setIDUser(isLogin.id)
         dispatch(getWarehouseLocation());
         dispatch(getProvince());
         
@@ -52,6 +60,7 @@ function Checkout () {
             setTotalCheckout(cartTotal + costDelivery);
             setPayment(true);
         }
+
     }, [loadingCheckoutDetail, costDelivery]);
 
     const renderCheckoutItem = () => {
@@ -99,19 +108,25 @@ function Checkout () {
         }
     }
 
-    const setCityByProvID = (id) => {
-        dispatch(getCityByProvID(id))
+    const handleProv = (event) => {
+        let index = event.target.selectedIndex;
+
+        setProvSelectedText(event.nativeEvent.target[index].text)
+        setProvSelected(event.target.value);
+        dispatch(getCityByProvID(event.target.value))
+    }
+
+    const handleCity = (event) => {
+        let index = event.target.selectedIndex;
+
+        setCitySelectedText(event.nativeEvent.target[index].text)
+        setCitySelected(event.target.value)
     }
 
     const checkDelivery = () => {
-        if (!destination) return
-        dispatch(getDelivery(destination, { product_id: JSON.stringify(productCheckout), quantity_p: JSON.stringify(quantityCheckout)}));
-    }
-
-    const paymentHandler = () => {
-        console.log(checkout)
-        localStorage.setItem('checkout', JSON.stringify(checkout));
-        navigate('/payment');
+        console.log(citySelected)
+        if (!citySelected) return
+        dispatch(getDelivery(citySelected, { product_id: JSON.stringify(productCheckout), quantity_p: JSON.stringify(quantityCheckout)}));
     }
 
     return (
@@ -181,106 +196,148 @@ function Checkout () {
                     </div>
                     <div className="col-md-6 address_form">
                         <h4>Add a new Details</h4>
-                        <form className="creditly-card-form agileinfo_form">
-                            <section className="creditly-wrapper wrapper">
-                                <div className="information-wrapper">
-                                    <div className="first-row form-group">
-                                        <div className="controls">
-                                            <label className="control-label">Full name: </label>
-                                            <input 
-                                                className="billing-address-name form-control" 
-                                                type="text" 
-                                                name="name" 
-                                                required 
-                                                placeholder="Full name"
-                                                disabled={ payment == true ? true : false } />
-                                        </div>
-                                        <div className="card_number_grids">
-                                            <div className="card_number_grid_left">
+                        <Formik  
+                            initialValues={{
+                                fullname: '',
+                                mobile_number: '',
+                                landmark: '',
+                                full_address: '',
+                                province: '',
+                                province_id: '',
+                                city: '',
+                                city_id: '',
+                                postal_code: ''
+                            }}
+                            onSubmit={async (values) => {
+                                await new Promise((r) => setTimeout(r, 500));
+                                localStorage.setItem('checkout', JSON.stringify(checkout));
+                                const body = { 
+                                    user_id: idUser, 
+                                    fullname: values.fullname, 
+                                    mobile_number: values.mobile_number,
+                                    full_address: values.full_address,
+                                    landmark: values.landmark,
+                                    province: provSelectedText,
+                                    province_id: provSelected,
+                                    city: citySelectedText,
+                                    city_id: citySelected,
+                                    postal_code: values.postal_code
+                                }
+                                dispatch(addAddressUser(body));
+                                navigate('/payment');
+                                console.log(body)
+                            }}
+                        >
+                            {({ isSubmitting }) => (
+                                <Form className="creditly-card-form agileinfo_form">
+                                    <section className="creditly-wrapper wrapper">
+                                        <div className="information-wrapper">
+                                            <div className="first-row form-group">
                                                 <div className="controls">
-                                                    <label className="control-label">Mobile number:</label>
-                                                    <input 
+                                                    <label className="control-label">Full name: </label>
+                                                    <Field 
+                                                        className="billing-address-name form-control" 
+                                                        name="fullname" 
+                                                        required 
+                                                        placeholder="Full name"
+                                                        disabled={ payment == true ? true : false } />
+                                                </div>
+                                                <div className="card_number_grids">
+                                                    <div className="card_number_grid_left">
+                                                        <div className="controls">
+                                                            <label className="control-label">Mobile number:</label>
+                                                            <Field 
+                                                                className="form-control" 
+                                                                name="mobile_number"
+                                                                placeholder="Mobile number" 
+                                                                disabled={ payment == true ? true : false }
+                                                                required />
+                                                        </div>
+                                                    </div>
+                                                    <div className="card_number_grid_right">
+                                                        <div className="controls">
+                                                            <label className="control-label">Landmark: </label>
+                                                            <Field 
+                                                                className="form-control" 
+                                                                type="text" 
+                                                                name="landmark"
+                                                                placeholder="Landmark"
+                                                                disabled={ payment == true ? true : false }
+                                                                required />
+                                                        </div>
+                                                    </div>
+                                                    <div className="clear"> </div>
+                                                </div>
+                                                <div className="controls">
+                                                    <label className="control-label">Full Address : </label>
+                                                    <Field 
                                                         className="form-control" 
                                                         type="text" 
-                                                        placeholder="Mobile number" 
+                                                        placeholder="Full Address" 
+                                                        name="full_address"
+                                                        disabled={ payment == true ? true : false }
+                                                        required />
+                                                </div>
+                                                <div className="controls">
+                                                    <label className="control-label">Province : </label>
+                                                    <Field as="select" 
+                                                        name="province_id" 
+                                                        required 
+                                                        className="form-control option-w3ls"
+                                                        value={provSelected}
+                                                        onChange={(event) => handleProv(event)}
+                                                        disabled={ payment == true ? true : false }
+                                                    >
+                                                        <option>Select Your Country</option>
+                                                            { renderProvince() }
+                                                    </Field>
+                                                </div>
+                                                <div className="controls">
+                                                    <label className="control-label">City : </label>
+                                                    <Field as="select" 
+                                                        required 
+                                                        className="form-control option-w3ls"
+                                                        disabled={ payment == true ? true : false }
+                                                        value={citySelected}
+                                                        onChange={ (event) => handleCity(event) }
+                                                        name="city_id"
+                                                    >
+                                                        <option>Select Your City</option>
+                                                            { renderCity() }
+                                                    </Field>
+                                                </div>
+                                                <div className="controls">
+                                                    <label className="control-label">Postal Code : </label>
+                                                    <Field 
+                                                        className="form-control" 
+                                                        type="text" 
+                                                        name="postal_code"
+                                                        placeholder="Postal Code" 
                                                         disabled={ payment == true ? true : false }
                                                         required />
                                                 </div>
                                             </div>
-                                            <div className="card_number_grid_right">
-                                                <div className="controls">
-                                                    <label className="control-label">Landmark: </label>
-                                                    <input 
-                                                        className="form-control" 
-                                                        type="text" 
-                                                        placeholder="Landmark" 
-                                                        disabled={ payment == true ? true : false }
-                                                        required />
-                                                </div>
-                                            </div>
-                                            <div className="clear"> </div>
-                                        </div>
-                                        <div className="controls">
-                                            <label className="control-label">Full Address : </label>
-                                            <input 
-                                                className="form-control" 
-                                                type="text" 
-                                                placeholder="Full Address" 
-                                                disabled={ payment == true ? true : false }
-                                                required />
-                                        </div>
-                                        <div className="controls">
-                                            <label className="control-label">Province : </label>
-                                            <select 
-                                                className="form-control option-w3ls" 
-                                                onChange={ (event) => setCityByProvID(event.target.value) }
-                                                required
-                                                disabled={ payment == true ? true : false }>
-                                                <option>Select Your Country</option>
-                                                    { renderProvince() }
-                                            </select>
-                                        </div>
-                                        <div className="controls">
-                                            <label className="control-label">City : </label>
-                                            <select 
-                                                className="form-control option-w3ls" 
-                                                required 
-                                                disabled={ payment == true ? true : false }
-                                                onChange={ (event) => setDestination(event.target.value) }>
-                                                <option>Select Your City</option>
-                                                    { renderCity() }
-                                            </select>
-                                        </div>
-                                        <div className="controls">
-                                            <label className="control-label">Postal Code : </label>
-                                            <input 
-                                                className="form-control" 
-                                                type="text" 
-                                                placeholder="Postal Code" 
-                                                disabled={ payment == true ? true : false }
-                                                required />
-                                        </div>
-                                    </div>
 
-                                    <div className="d-flex justify-content-between">
-                                        <a className="text-white btn btn-dark d-flex w-100 justify-content-between align-items-center mr-1"
-                                            disabled={ payment == true ? true : false }
-                                            onClick={ () => checkDelivery() } >
-                                            <div>
-                                                <span className="fas fa-truck text-success mr-2"></span>
-                                                Check Delivery
+                                            <div className="d-flex justify-content-between">
+                                                <a className="text-white btn btn-dark d-flex w-100 justify-content-between align-items-center mr-1"
+                                                    disabled={isSubmitting}
+                                                    onClick={ () => checkDelivery() } >
+                                                    <span className="fas fa-truck text-success mr-2"></span>
+                                                    Check Delivery
+                                                </a>
+                                                <button className="text-white submit check_out btn d-flex w-100 justify-content-between align-items-center btn-success ml-1"
+                                                    // disabled={ payment == true ? false : true }
+                                                    type="submit"
+                                                >
+                                                    Make a Payment
+                                                    <span className="fas fa-chevron-right"></span>
+                                                </button>
                                             </div>
-                                            <span className="fas fa-chevron-right"></span>
-                                        </a>
-                                        <a className="text-white submit check_out btn d-flex w-100 justify-content-between align-items-center btn-success ml-1"
-                                            disabled={ payment == true ? false : true }
-                                            onClick={ () => paymentHandler() }>
-                                                Make a Payment
-                                        </a>
-                                    </div>
-                                </div>
-                            </section>
-                        </form>
+                                        </div>
+                                    </section>
+                                </Form>
+                            )}
+                        </Formik>
                     </div>
                 </div>
 
