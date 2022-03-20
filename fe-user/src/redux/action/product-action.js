@@ -10,7 +10,6 @@ export const getProduct = (params) => {
             const respond = await Axios.get(API_URL + query, { params });
             console.log(API_URL)
             dispatch({ type: GET_PRODUCT, payload: respond.data.data });
-            console.log(respond.data.data)
         } catch (error) {
             console.log(error)
         }

@@ -12,13 +12,10 @@ import "./style.css";
 function Product () {
     const { addItem, items } = useCart();
     const [page, setPage] = useState(1);
-    const [size, setSize] = useState(2);
-    const [params, setParams] = useState({
-        "product_name": "",
-        "category_id": [],
-        "page": page,
-        "size": size
-    });
+    const [size, setSize] = useState(12);
+    const [search, setSearch] = useState('');
+    const [categoryID, setCategoryID] = useState([]);
+    
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { data, category, totalPage, currPage, totalData } = useSelector(state => {
@@ -32,20 +29,36 @@ function Product () {
     });
 
     useEffect(() => {
+        const params = { "product_name": "", "category_id": [], page, size}
         dispatch(getProduct(params));
-        console.log(params)
         dispatch(getCategory());
-    }, [page]);
+    }, [page, size]);
 
     const handleFilterChange = (event) => {
-        setParams((prevProps) => ({
-            ...prevProps,
-            [event.target.name]: event.target.value
-        }))
+        // setParams((prevProps) => ({
+        //     ...prevProps,
+        //     [event.target.name]: event.target.value
+        // }))
     }
 
     const handleSearch = (event) => {
         event.preventDefault();
+        setPage(1);
+        const params = { "product_name": search, "category_id": categoryID, size, page };
+        dispatch(getProduct(params))
+    }
+
+    const handleCategory = (id) => {
+        setCategoryID(id);
+        setPage(1)
+        const params = { "product_name": search, "category_id": id, size, page };
+        dispatch(getProduct(params))
+    }
+
+    const handlerPageSize = (id) => {
+        setSize(id);
+        setPage(1);
+        const params = { "product_name": search, "category_id": categoryID, size, page };
         dispatch(getProduct(params))
     }
 
@@ -54,8 +67,6 @@ function Product () {
         for (let i = 0; i < items.length; i++) {
             if (items[0].id === item_checkout.id) {
                 if(items[0].quantity >= parseInt(item_checkout.quantity)) {
-                    console.log(item_checkout.quantity)
-                    console.log(items[0].quantity)
                     disabledButton = true;
                 }
             }
@@ -96,6 +107,8 @@ function Product () {
                                         <div className="product_price">
                                             <h4>
                                                 <a onClick={ () => navigate(`/product/detail/${item.id}`)}>{ item.product_name }</a>
+                                                <br />
+                                                <span className='text-muted' style={{ fontSize: 12 }}>{item.category}</span>
                                             </h4>
                                             <div className="grid-price mt-2">
                                                 <span className="money ">
@@ -163,7 +176,7 @@ function Product () {
                             <div className="search-hotel">
                                 <h3 className="agileits-sear-head">Search Here..</h3>
                                 <form onSubmit={ handleSearch }>
-                                    <input className="form-control" type="search" name="product_name" placeholder="Search here..." required="" onChange={handleFilterChange} />
+                                    <input className="form-control" type="search" name="product_name" placeholder="Search here..." required="" onChange={(event) => setSearch(event.target.value)} />
                                     <button className="btn1">
                                             <i className="fas fa-search"></i>
                                     </button>
@@ -174,14 +187,14 @@ function Product () {
                                 <h3 className="agileits-sear-head">Category</h3>
                                 <ul>
                                     <li className="d-flex align-items-center mb-2">
-                                        <input type="radio" className="checked" name='category_id' value="" style={{ width: 20, height: 20}} onClick={handleFilterChange} />
+                                        <input type="radio" className="checked" checked={categoryID == '' ? true : false} name='category_id' value="" style={{ width: 20, height: 20}} onClick={() => handleCategory('') } />
                                         <span className="span ml-3" style={{ fontSize: 18 }}>All</span>
                                     </li>
                                     {
                                         category.map((item, idx) => {
                                             return (
                                                 <li key={ idx } className="d-flex align-items-center mb-2">
-                                                    <input type="radio" className="checked" name='category_id' value={ item.id } style={{ width: 20, height: 20}} onClick={handleFilterChange} />
+                                                    <input type="radio" className="checked" checked={categoryID == item.id ? true : false} name='category_id' value={ item.id } style={{ width: 20, height: 20}} onClick={() => handleCategory(item.id) } />
                                                     <span className="span ml-3" style={{ fontSize: 18 }}>{ item.name }</span>
                                                 </li>
                                             )
@@ -208,17 +221,17 @@ function Product () {
                         <div className="left-ads-display col-lg-9">
                             <div className="wrapper_top_shop">
                                 <div className="row">
-                                    <div className="col-md-6 d-flex align-items-center">
+                                    <div className="col-md-6 d-flex align-items-center mb-2">
                                         Rows :
                                         <Pagination className='mb-0 ml-2'>
-                                            <Pagination.Item onClick={ () => setSize(4) }>{4}</Pagination.Item>
-                                            <Pagination.Item onClick={ () => setSize(12) } active>{12}</Pagination.Item>
-                                            <Pagination.Item onClick={ () => setSize(20) }>{20}</Pagination.Item>
-                                            <Pagination.Item onClick={ () => setSize(100) }>{'All'}</Pagination.Item>
+                                            <Pagination.Item onClick={ () => handlerPageSize(4) } className={ size == 4 ? 'active' : '' } >{4}</Pagination.Item>
+                                            <Pagination.Item onClick={ () => handlerPageSize(12) } className={ size == 12 ? 'active' : '' } >{12}</Pagination.Item>
+                                            <Pagination.Item onClick={ () => handlerPageSize(20) } className={ size == 20 ? 'active' : '' } >{20}</Pagination.Item>
+                                            <Pagination.Item onClick={ () => handlerPageSize(100) } className={ size == 100 ? 'active' : '' } >{'All'}</Pagination.Item>
                                         </Pagination>
                                     </div>
-                                    <div className="col-md-6 d-flex justify-content-end">
-                                        <Pagination>
+                                    <div className="col-md-6 d-flex justify-content-end align-items-center mb-2">
+                                        <Pagination className='mb-0'>
                                             <Pagination.Prev onClick={ () => setPage(currPage - 1) } className={currPage ===  1 ? 'disabled' : ''} />
                                             { renderPagination() }
                                             <Pagination.Next onClick={ () => setPage(currPage + 1) } className={currPage === totalPage ? 'disabled' : ''} />
