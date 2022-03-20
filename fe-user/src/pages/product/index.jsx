@@ -15,6 +15,7 @@ function Product () {
     const [size, setSize] = useState(12);
     const [search, setSearch] = useState('');
     const [categoryID, setCategoryID] = useState([]);
+    const [sort, setSort] = useState('');
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -29,37 +30,30 @@ function Product () {
     });
 
     useEffect(() => {
-        const params = { "product_name": "", "category_id": [], page, size}
+        const params = { "product_name": search, "category_id": categoryID, page, size, sort}
         dispatch(getProduct(params));
         dispatch(getCategory());
-    }, [page, size]);
-
-    const handleFilterChange = (event) => {
-        // setParams((prevProps) => ({
-        //     ...prevProps,
-        //     [event.target.name]: event.target.value
-        // }))
-    }
+        console.log(params)
+    }, [page, size, sort, search, categoryID]);
 
     const handleSearch = (event) => {
         event.preventDefault();
         setPage(1);
-        const params = { "product_name": search, "category_id": categoryID, size, page };
-        dispatch(getProduct(params))
     }
 
     const handleCategory = (id) => {
         setCategoryID(id);
         setPage(1)
-        const params = { "product_name": search, "category_id": id, size, page };
-        dispatch(getProduct(params))
     }
 
     const handlerPageSize = (id) => {
         setSize(id);
         setPage(1);
-        const params = { "product_name": search, "category_id": categoryID, size, page };
-        dispatch(getProduct(params))
+    }
+
+    const handleSort = (id) => {
+        setSort(id);
+        setPage(1);
     }
 
     const addItemCart = (item_checkout) => {
@@ -187,14 +181,14 @@ function Product () {
                                 <h3 className="agileits-sear-head">Category</h3>
                                 <ul>
                                     <li className="d-flex align-items-center mb-2">
-                                        <input type="radio" className="checked" checked={categoryID == '' ? true : false} name='category_id' value="" style={{ width: 20, height: 20}} onClick={() => handleCategory('') } />
+                                        <input type="radio" className="checked" checked={categoryID == '' ? true : false} name='category_id' value="" style={{ width: 20, height: 20}} onChange={() => handleCategory('') } />
                                         <span className="span ml-3" style={{ fontSize: 18 }}>All</span>
                                     </li>
                                     {
                                         category.map((item, idx) => {
                                             return (
                                                 <li key={ idx } className="d-flex align-items-center mb-2">
-                                                    <input type="radio" className="checked" checked={categoryID == item.id ? true : false} name='category_id' value={ item.id } style={{ width: 20, height: 20}} onClick={() => handleCategory(item.id) } />
+                                                    <input type="radio" className="checked" checked={categoryID == item.id ? true : false} name='category_id' value={ item.id } style={{ width: 20, height: 20}} onChange={() => handleCategory(item.id) } />
                                                     <span className="span ml-3" style={{ fontSize: 18 }}>{ item.name }</span>
                                                 </li>
                                             )
@@ -206,12 +200,16 @@ function Product () {
                                 <h3 className="agileits-sear-head">Sort</h3>
                                 <ul>
                                     <li className="d-flex align-items-center mb-2">
-                                        <input type="radio" className="checked" name='category_id' value='ASC' style={{ width: 20, height: 20}} onClick={handleFilterChange} />
-                                        <span className="span ml-3" style={{ fontSize: 18 }}>Low to High</span>
+                                        <input type="radio" className="checked" name='sort' checked={sort == '' ? true : false} onChange={ () => handleSort('')} value='' style={{ width: 20, height: 20}} />
+                                        <span className="span ml-3" style={{ fontSize: 18 }} >Default</span>
                                     </li>
                                     <li className="d-flex align-items-center mb-2">
-                                        <input type="radio" className="checked" name='category_id' value='DESC' style={{ width: 20, height: 20}} onClick={handleFilterChange} />
-                                        <span className="span ml-3" style={{ fontSize: 18 }}>High to Low</span>
+                                        <input type="radio" className="checked" name='sort' checked={sort == 0 ? true : false} onChange={ () => handleSort(0)} value='ASC' style={{ width: 20, height: 20}} />
+                                        <span className="span ml-3" style={{ fontSize: 18 }} >Low to High</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                        <input type="radio" className="checked" name='sort' checked={sort == 1 ? true : false} onChange={ () => handleSort(1)} value='DESC' style={{ width: 20, height: 20}} />
+                                        <span className="span ml-3" style={{ fontSize: 18 }} >High to Low</span>
                                     </li>
                                 </ul>
                             </div>
