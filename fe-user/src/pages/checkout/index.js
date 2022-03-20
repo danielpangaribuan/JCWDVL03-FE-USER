@@ -11,7 +11,6 @@ import "./style.css";
 
 // ========== GOOGLE MAPS PICKER API ==============
 function Checkout () {
-    const [idUser, setIDUser] = useState(null);
     const [citySelected, setCitySelected] = useState();
     const [citySelectedText, setCitySelectedText] = useState();
     const [provSelected, setProvSelected] = useState();
@@ -31,21 +30,21 @@ function Checkout () {
         items
     } = useCart();
     
-    const { isLogin, province, loadingProv, city, costDelivery, loadingCheckoutDetail, checkout } = useSelector(state => {
+    const { user_id, province, loadingProv, city, costDelivery, loadingCheckoutDetail, checkout } = useSelector(state => {
         return {
-            isLogin: state.auth.data,
+            user_id: state.auth.data,
             province: state.location.province,
             loadingProv: state.location.loadingProv,
             city: state.location.city,
-            costDelivery: state.location.checkoutDetail.total_cost,
+            costDelivery: state.location.checkoutDetail,
             checkout: state.location.checkoutDetail,
             loadingCheckoutDetail: state.location.loadingCheckoutDetail
         }
     });
 
     useEffect(() => {
-        if (!isLogin) navigate("/");
-        else setIDUser(isLogin.id)
+        const token = localStorage.getItem('token');
+        if (!token) navigate("/");
         dispatch(getWarehouseLocation());
         dispatch(getProvince());
         
@@ -53,10 +52,10 @@ function Checkout () {
             setProductCheckout(oldArray => [ ...oldArray, items[i].id])
             setQuantityCheckout(oldArray => [ ...oldArray, items[i].quantity ])
         }
-        if (costDelivery) {
-            setdDliveryFee(costDelivery);
-            setTotalCheckout(cartTotal + costDelivery);
-            setPayment(true);
+        console.log(costDelivery)
+        if (costDelivery != undefined) {
+            setdDliveryFee(costDelivery.total_cost);
+            setTotalCheckout(cartTotal + costDelivery.total_cost);
         }
 
     }, [loadingCheckoutDetail, costDelivery]);
@@ -122,7 +121,6 @@ function Checkout () {
     }
 
     const checkDelivery = () => {
-        console.log(citySelected)
         if (!citySelected) return
         dispatch(getDelivery(citySelected, { product_id: JSON.stringify(productCheckout), quantity_p: JSON.stringify(quantityCheckout)}));
     }
@@ -208,9 +206,10 @@ function Checkout () {
                             }}
                             onSubmit={async (values) => {
                                 await new Promise((r) => setTimeout(r, 500));
+                                setPayment(true);
                                 localStorage.setItem('checkout', JSON.stringify(checkout));
                                 const body = { 
-                                    user_id: idUser, 
+                                    user_id: user_id.id, 
                                     fullname: values.fullname, 
                                     mobile_number: values.mobile_number,
                                     full_address: values.full_address,
@@ -223,7 +222,6 @@ function Checkout () {
                                 }
                                 dispatch(addAddressUser(body));
                                 navigate('/payment');
-                                console.log(body)
                             }}
                         >
                             {({ isSubmitting }) => (

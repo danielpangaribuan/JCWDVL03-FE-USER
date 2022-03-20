@@ -50,13 +50,27 @@
 
 .form-upload-wrapper.open {
     height: 60px;
+    display: flex;
+    align-items: center;
+    overflow: unset;
+}
+
+.form-upload-wrapper form {
+    display: flex;
+    align-items: center;
 }
 
 .form-upload {
-    margin: 4px 16px;
-    padding: 8px;
+    margin: 4px 4px 4px 16px;
+    padding: 2px 8px;
     border-radius: 4px;
     width: fit-content;
-    border: 1px solid #bbb;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 45px;
+}
+
+.form-upload input {
+    font-size: 14px;
 }

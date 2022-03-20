@@ -1,7 +1,7 @@
 import { ADD_ADDRESS_USER } from "../action/type";
 
 const INITIAL_STATE = {
-    address_id: null
+    address_id: []
 }
 
 export const UserReducer = (state = INITIAL_STATE, action) => {

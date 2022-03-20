@@ -1,20 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTransaction } from "../../../redux/action/checkout-action";
+import { Button, Modal, Dropdown } from 'react-bootstrap';
+import { getTransaction, updateReceipt } from "../../../redux/action/checkout-action";
+import { DateTime } from 'react-datetime-bootstrap';
+import Dropzone from "react-dropzone";
+import $ from 'jquery';
+import moment from 'moment';
 
 function Transaction () {
-    const [uploadShow, setUploadShow] = useState(false);
     const dispatch = useDispatch();
-    const { data_transaction, user_id } = useSelector(state => {
+    const [selectedFile, setSelectedFile] = useState('');
+    const [selectedDate, setSelectedDate] = useState(moment().format('YYYY/MM/DD'));
+    const [selectedInvoice, setSelectedInvoice] = useState('');
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    
+    const handleSubmit = (e, data) => {
+        e.preventDefault();
+        setSelectedInvoice(data);
+        handleShow();
+    };
+
+    const onSubmitReceipt = () => {
+        const body = { file: selectedFile, date_transfer: selectedDate }
+        dispatch(updateReceipt(selectedInvoice, body));
+        handleClose();
+    }
+    
+    const { data_transaction, data, loading } = useSelector(state => {
         return {
             data_transaction: state.transaction.data,
-            user_id: state.auth.data.id
+            data: state.auth.data,
+            loading: state.auth.loading
         }
     });
 
     useEffect(() => {
-        dispatch(getTransaction(user_id));
-    }, []);
+        if (data)
+            dispatch(getTransaction(data.id));
+    }, [loading]);
+
+    const handlerShopUpload = (item) => {
+        if ($(`#formUpload${item}`).hasClass('open')) $(`#formUpload${item}`).removeClass('open')
+        else {
+            if ($('.form-upload-wrapper.open')) {
+                $('.form-upload-wrapper.open').removeClass('open');
+            }
+            $(`#formUpload${item}`).addClass('open')
+            setSelectedFile('');
+        }
+    }
 
     const transactionHandler = () => {
         if (data_transaction) {
@@ -30,22 +66,31 @@ function Transaction () {
                                     </h5>
                                 </div>
                                 <span className='text-muted ml-4' style={{ fontSize: 14 }}>
-                                    { val.created_at }
+                                    { moment(val.created_at).format('MMMM Do YYYY') }
                                 </span>
                             </div>
-                            <div className="head-list-right">
+                            <div className="head-list-right d-flex align-items-center">
                                 {
                                     val.status_id === 1 ? (
-                                        <button className='btn btn-dark' onClick={ () => setUploadShow(uploadShow == false ? true : false) }>
+                                        <button className='btn btn-dark' onClick={ () => handlerShopUpload(idx) }>
                                             Upload Receipt Transfer
                                         </button>
                                     ) : (
                                         ''
                                     )
                                 }
-                                <button className='btn btn-transparent'>
-                                    <span className="fas fa-ellipsis-v"></span>
-                                </button>
+                                <Dropdown>
+                                    <Dropdown.Toggle id="dropdown-button-dark-example1" variant="transparent">
+                                        <span className="fas fa-ellipsis-v"></span>
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu variant="dark" className='bg-dark'>
+                                        <Dropdown.Item >
+                                            Download Inovice
+                                        </Dropdown.Item>
+                                        <Dropdown.Item href="#/action-2">Batalkan Transaksi</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
                             </div>
                         </div>
                         <div className="body-list">
@@ -70,10 +115,29 @@ function Transaction () {
                         </div>
                         {
                             val.status_id === 1 ? (
-                                <div className={`form-upload-wrapper ${uploadShow === true ? 'open' : ''}`}>
-                                    <div className="form-upload">
-                                        <input type="file" />
-                                    </div>
+                                <div className='form-upload-wrapper' id={`formUpload${idx}`}>
+                                    <form>
+                                        <div className="form-upload">
+                                            <Dropzone onDrop={acceptedFiles => setSelectedFile(acceptedFiles[0].name)}>
+                                                {({getRootProps, getInputProps}) => (
+                                                    <section>
+                                                        <div {...getRootProps()}>
+                                                            <input {...getInputProps()} />
+                                                            <div className="d-flex align items-center btn btn-primary">
+                                                                <span className="fas fa-cloud-upload-alt mt-1 mr-2"></span>
+                                                                Choose image
+                                                            </div>
+                                                            {
+                                                                selectedFile === '' ? '' : <span className='mt-1 text-muted'>File : {selectedFile}</span>
+                                                            }
+                                                        </div>
+                                                    </section>
+                                                )}
+                                            </Dropzone>
+                                        </div>
+                                        <DateTime pickerOptions={{format:"LL"}} value={selectedDate} id="dateTime" onChange={ (event) => setSelectedDate(moment(event).format("YYYY-MM-DD")) } className="mr-2" />
+                                        <button className="btn btn-success" onClick={ (e) => handleSubmit(e, val.invoice_number) } disabled={selectedFile === '' ? true : false}>Upload</button>
+                                    </form>
                                 </div>
                             ) : (
                                 ''
@@ -98,6 +162,25 @@ function Transaction () {
             <ul style={{ listStyle: 'none' }}>
                 { transactionHandler() }
             </ul>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedInvoice}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Are you sure to upload this receipt ?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={ () => onSubmitReceipt() }>Understood</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

@@ -15,19 +15,22 @@ function Payment () {
     const navigate = useNavigate();
     const {
         cartTotal,
-        items
+        items,
+        isEmpty,
+        emptyCart,
     } = useCart();
 
-    const { user_id, address_id, combo_bank, bank_loading } = useSelector(state => {
+    const { user_id, address_id, combo_bank, bank_loading, state } = useSelector(state => {
         return {
             user_id: state.auth.data.id,
             address_id: state.user.address_id,
             combo_bank: state.combo.bank,
-            bank_loading: state.combo.bankLoading
+            bank_loading: state.combo.bankLoading,
         }
     });
 
     useEffect(() => {
+        if (isEmpty) navigate('/product')
         dispatch(getComboBank());
 
         let checkout = JSON.parse(localStorage.getItem('checkout')) || [];
@@ -104,6 +107,7 @@ function Payment () {
             checkout_item: checkoutItem,
             user_address_id : address_id
         }
+        emptyCart();
         dispatch(addTransaction(body));
         navigate('/profile');
     }

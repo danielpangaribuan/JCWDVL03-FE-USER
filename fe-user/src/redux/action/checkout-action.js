@@ -3,7 +3,8 @@ import {
     ADD_TRANSACTION,
     START_GET_TRANSACTION,
     GET_TRANSACTION,
-    END_GET_TRANSACTION 
+    END_GET_TRANSACTION,
+    UPLOAD_RECEIPT
 } from "./type";
 
 const API_URL = "http://localhost:2000";
@@ -32,6 +33,19 @@ export const getTransaction = (user_id) => {
             dispatch({ type: END_GET_TRANSACTION });
         } catch (error) {
             dispatch({ type: END_GET_TRANSACTION });
+            console.log(error);
+        }
+    }
+}
+
+export const updateReceipt = (invoice, body) => {
+    return async (dispatch) => {
+        try {
+            const query = `/uploadReceipt/${invoice}`;
+            const respond = Axios.post(API_URL + query, body);
+
+            dispatch({ type: UPLOAD_RECEIPT, payload: respond.data });
+        } catch (error) {
             console.log(error);
         }
     }

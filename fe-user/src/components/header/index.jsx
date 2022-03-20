@@ -35,11 +35,11 @@ function Header(props) {
   useEffect(() => {
     $("#btnLogin").on('click', function () {
       $(".overlay-login").fadeToggle(200);
-      // $(this).toggleClass("btn-open").toggleClass("btn-close");
+      $(this).toggleClass("btn-open").toggleClass("btn-close");
     });
     $("#overlay-close1").on("click", function () {
       $(".overlay-login").fadeToggle(200);
-      // $("#btnLogin").toggleClass("btn-open").toggleClass("btn-close");
+      $("#btnLogin").toggleClass("btn-open").toggleClass("btn-close");
       // open = false;
     });
   }, []);
@@ -62,6 +62,7 @@ function Header(props) {
 
   const onButtonLogOut = () => {
     dispatch(AuthUserLogOut());
+    navigate('/');
   };
 
   // if (data) return <Navigate to="/" />;
