@@ -1,29 +1,23 @@
 import React from 'react';
-import { Page, Text, View, Document, Stylesheet } from '@react-pdf/renderer';
+import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
+// import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
-const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'row',
-      backgroundColor: '#E4E4E4'
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1
-    }
-});
+function Pdf () {
 
-const PDFDocument = () => (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.section}>
-                <Text>Section #1</Text>
-            </View>
-            <View style={styles.section}>
-                <Text>Section #2</Text>
-            </View>
-        </Page>
-    </Document>
-);
+    const styles = StyleSheet.create({
+        page: { backgroundColor: 'tomato' },
+        section: { color: 'white', textAlign: 'center', margin: 30 }
+    });
+  
+    return (
+        <div className="pdf">
+            <header className="App-header">
+                {/* <Document file="/sample.pdf" onLoadSuccess={onDocumentLoadSuccess}>
+                    <Page height="600" />
+                </Document> */}
+            </header>
+        </div>
+    )
+}
 
-export default PDFDocument;
+export default Pdf;

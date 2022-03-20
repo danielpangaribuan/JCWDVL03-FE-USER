@@ -28,11 +28,12 @@ function Transaction () {
         handleClose();
     }
     
-    const { data_transaction, data, loading } = useSelector(state => {
+    const { data_transaction, data, loading, loadingUpload } = useSelector(state => {
         return {
             data_transaction: state.transaction.data,
             data: state.auth.data,
-            loading: state.auth.loading
+            loading: state.auth.loading,
+            loadingUpload: state.transaction.loading
         }
     });
 
@@ -85,6 +86,11 @@ function Transaction () {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu variant="dark" className='bg-dark'>
+                                        <Dropdown.Item >
+                                            {/* <PDFDownloadLink document={<MyDoc  data={user} />} fileName="somename.pdf">
+                                                {({ blob, url, loading, error }) => (loading ? 'Loading document...' :<a href={url}>Url Link here</a>)}
+                                            </PDFDownloadLink> */}
+                                        </Dropdown.Item>
                                         <Dropdown.Item >
                                             Download Inovice
                                         </Dropdown.Item>
