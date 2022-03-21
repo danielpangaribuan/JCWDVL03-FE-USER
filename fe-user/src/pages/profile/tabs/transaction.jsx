@@ -7,9 +7,14 @@ import Dropzone from "react-dropzone";
 import $ from 'jquery';
 import moment from 'moment';
 
+const initialState = {
+    addFileName: '',
+    addFile: {}
+}
+
 function Transaction () {
     const dispatch = useDispatch();
-    const [selectedFile, setSelectedFile] = useState('');
+    const [selectedFile, setSelectedFile] = useState(initialState);
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY/MM/DD'));
     const [selectedInvoice, setSelectedInvoice] = useState('');
     const [show, setShow] = useState(false);
@@ -23,9 +28,23 @@ function Transaction () {
     };
 
     const onSubmitReceipt = () => {
-        const body = { file: selectedFile, date_transfer: selectedDate }
-        dispatch(updateReceipt(selectedInvoice, body));
-        handleClose();
+        if (selectedFile) {
+            let formData = new FormData();
+
+            let obj = {
+                date_transfer : selectedDate
+            }
+            
+            formData.append('data', JSON.stringify(obj));
+            formData.append('file', selectedFile.addFile, selectedFile.addFileName);
+
+            dispatch(updateReceipt(selectedInvoice, formData));
+            handleClose();
+            $('.form-upload-wrapper.open').removeClass('open');
+            setSelectedFile(initialState);
+            $('#img').val('');
+            $('#imgpreview').attr('src', '');
+        }
     }
     
     const { data_transaction, data, loading, loadingUpload } = useSelector(state => {
@@ -33,23 +52,34 @@ function Transaction () {
             data_transaction: state.transaction.data,
             data: state.auth.data,
             loading: state.auth.loading,
-            loadingUpload: state.transaction.loading
+            loadingUpload: state.transaction.loading_upload
         }
     });
 
     useEffect(() => {
         if (data)
             dispatch(getTransaction(data.id));
-    }, [loading]);
+        console.log(selectedFile);
+    }, [loading, loadingUpload]);
 
-    const handlerShopUpload = (item) => {
+    const handlerShowUpload = (item) => {
         if ($(`#formUpload${item}`).hasClass('open')) $(`#formUpload${item}`).removeClass('open')
         else {
             if ($('.form-upload-wrapper.open')) {
                 $('.form-upload-wrapper.open').removeClass('open');
             }
             $(`#formUpload${item}`).addClass('open')
-            setSelectedFile('');
+            setSelectedFile(initialState);
+            $('#img').val('');
+            $('#imgpreview').attr('src', '');
+        }
+    }
+
+    const onBtnAddFile = (e) => {
+        if (e.target.files[0]) {
+            setSelectedFile({ addFileName: e.target.files[0].name, addFile: e.target.files[0] });
+            let preview = document.getElementById('imgpreview');
+            preview.src = URL.createObjectURL(e.target.files[0]);
         }
     }
 
@@ -73,7 +103,7 @@ function Transaction () {
                             <div className="head-list-right d-flex align-items-center">
                                 {
                                     val.status_id === 1 ? (
-                                        <button className='btn btn-dark' onClick={ () => handlerShopUpload(idx) }>
+                                        <button className='btn btn-dark' onClick={ () => handlerShowUpload(idx) }>
                                             Upload Receipt Transfer
                                         </button>
                                     ) : (
@@ -121,29 +151,18 @@ function Transaction () {
                         </div>
                         {
                             val.status_id === 1 ? (
-                                <div className='form-upload-wrapper' id={`formUpload${idx}`}>
+                                <div className='form-upload-wrapper' id={`formUpload${idx}`} >
                                     <form>
                                         <div className="form-upload">
-                                            <Dropzone onDrop={acceptedFiles => setSelectedFile(acceptedFiles[0].name)}>
-                                                {({getRootProps, getInputProps}) => (
-                                                    <section>
-                                                        <div {...getRootProps()}>
-                                                            <input {...getInputProps()} />
-                                                            <div className="d-flex align items-center btn btn-primary">
-                                                                <span className="fas fa-cloud-upload-alt mt-1 mr-2"></span>
-                                                                Choose image
-                                                            </div>
-                                                            {
-                                                                selectedFile === '' ? '' : <span className='mt-1 text-muted'>File : {selectedFile}</span>
-                                                            }
-                                                        </div>
-                                                    </section>
-                                                )}
-                                            </Dropzone>
+                                            <input type="file" className='form-control' id='img' onChange={ (e) => onBtnAddFile(e) } />
                                         </div>
                                         <DateTime pickerOptions={{format:"LL"}} value={selectedDate} id="dateTime" onChange={ (event) => setSelectedDate(moment(event).format("YYYY-MM-DD")) } className="mr-2" />
                                         <button className="btn btn-success" onClick={ (e) => handleSubmit(e, val.invoice_number) } disabled={selectedFile === '' ? true : false}>Upload</button>
+                                        
                                     </form>
+                                    <div className="img-preview" style={{ margin: '0 25px 10px' }}>
+                                        <img id="imgpreview" width="100px"/>
+                                    </div>
                                 </div>
                             ) : (
                                 ''
