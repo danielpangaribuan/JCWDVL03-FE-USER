@@ -49,10 +49,11 @@
 }
 
 .form-upload-wrapper.open {
-    height: 60px;
+    height: fit-content;
     display: flex;
-    align-items: center;
     overflow: unset;
+    flex-direction: column;
+    /* min-height: fit-content; */
 }
 
 .form-upload-wrapper form {

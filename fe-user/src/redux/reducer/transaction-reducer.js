@@ -8,7 +8,8 @@ import {
 
 const INITIAL_STATE = {
     data: [],
-    loading: false
+    loading: false,
+    loading_upload: false
 }
 
 export const TransactionReducer = (state = INITIAL_STATE, action) => {
@@ -20,9 +21,9 @@ export const TransactionReducer = (state = INITIAL_STATE, action) => {
         case END_GET_TRANSACTION:
             return { ...state, loading: false }
         case START_UPLOAD_RECEIPT:
-            return { ...state, loading: true }
+            return { ...state, loading_upload: true }
         case END_UPLOAD_RECEIPT:
-            return { ...state, loading: false}
+            return { ...state, loading_upload: false}
         default:
             return state
     }

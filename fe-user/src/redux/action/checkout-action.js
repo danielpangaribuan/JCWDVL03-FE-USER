@@ -45,10 +45,10 @@ export const updateReceipt = (invoice, body) => {
         try {
             dispatch({ type: START_UPLOAD_RECEIPT });
             const query = `/uploadReceipt/${invoice}`;
-            
+
             const respond = await Axios.post(API_URL + query, body);
 
-            dispatch({ type: UPLOAD_RECEIPT, payload: respond.data });
+            dispatch({ type: UPLOAD_RECEIPT, payload: respond.data.data });
             dispatch({ type: END_UPLOAD_RECEIPT });
         } catch (error) {
             dispatch({ type: END_UPLOAD_RECEIPT });
