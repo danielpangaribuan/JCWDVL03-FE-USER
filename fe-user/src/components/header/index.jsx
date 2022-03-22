@@ -33,7 +33,7 @@ function Header(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    $("#btnLogin").on('click', function () {
+    $("#btnLogin").on("click", function () {
       $(".overlay-login").fadeToggle(200);
       $(this).toggleClass("btn-open").toggleClass("btn-close");
     });
@@ -62,7 +62,7 @@ function Header(props) {
 
   const onButtonLogOut = () => {
     dispatch(AuthUserLogOut());
-    navigate('/');
+    navigate("/");
   };
 
   // if (data) return <Navigate to="/" />;
@@ -81,13 +81,13 @@ function Header(props) {
       };
       dispatch(AuthUserRegister(body));
 
-      setSuccessRegister(true);
+      // setSuccessRegister(true);
     } catch (error) {
       console.log(error);
     }
 
-    if (successregister) return;
-    setRegisterForm(false);
+    // if (successregister) return;
+    // setRegisterForm(false);
   };
 
   return (
@@ -119,22 +119,29 @@ function Header(props) {
                 <ul className="cart-inner-info">
                   {data ? (
                     <li className="button-profile">
-                      <a className="btn btn-transparent"  onClick={ () => navigate('/profile') }>
-                        <span className="fa fa-user" aria-hidden="true"></span> Profile
+                      <a
+                        className="btn btn-transparent"
+                        onClick={() => navigate("/profile")}
+                      >
+                        <span className="fa fa-user" aria-hidden="true"></span>{" "}
+                        Welcome, {data.username}
                       </a>
                     </li>
                   ) : (
                     <li className="button-log">
-                      <a className="btn-open btn-login" id="btnLogin" style={{ cursor: 'pointer' }}>
+                      <a
+                        className="btn-open btn-login"
+                        id="btnLogin"
+                        style={{ cursor: "pointer" }}
+                      >
                         <span className="fa fa-user" aria-hidden="true"></span>
                       </a>
                     </li>
                   )}
 
                   {data ? (
-                    ''
-                    ) : (
-                    
+                    ""
+                  ) : (
                     <div className="overlay-login text-left">
                       <button type="button" id="overlay-close1">
                         <i className="fa fa-times" aria-hidden="true"></i>
@@ -176,7 +183,9 @@ function Header(props) {
                                   onChange={(e) => setPassword(e.target.value)}
                                 />
                                 {error ? (
-                                  <Form.Text className="error">{error}</Form.Text>
+                                  <Form.Text className="error">
+                                    {error}
+                                  </Form.Text>
                                 ) : null}
                               </Form.Group>
 
@@ -348,7 +357,9 @@ function Header(props) {
                                   Register
                                 </Button>
                                 {error ? (
-                                  <Form.Text className="error">{error}</Form.Text>
+                                  <Form.Text className="error">
+                                    {error}
+                                  </Form.Text>
                                 ) : null}
                                 <p>
                                   Already have an account ?
@@ -365,11 +376,11 @@ function Header(props) {
                         </div>
                       )}
                     </div>
-                    )}
+                  )}
                   <li className="galssescart galssescart2 cart cart box_1">
                     <button
                       className="top_googles_cart"
-                      onClick={ props.showCart }
+                      onClick={props.showCart}
                     >
                       My Cart
                       <i className="fas fa-cart-arrow-down"></i>
